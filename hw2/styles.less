@@ -1,0 +1,19 @@
+@link-color: gray;
+@link-color-hover:  darken(@link-color, 10%);
+@bg-color: white;
+@nav-link: .navbar-nav.me-auto.mb-2.mb-lg-0;
+
+@{nav-link} li a{
+    color: @link-color;
+    &:hover{
+        color: @link-color-hover;
+    }
+}
+
+.mixin-bg-color {
+    background-color: @bg-color;
+}
+
+body {
+    .mixin-bg-color();
+}

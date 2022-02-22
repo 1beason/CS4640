@@ -1,0 +1,148 @@
+<!-- 1. create HTML5 doctype -->
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">  
+  
+  <!-- 2. include meta tag to ensure proper rendering and touch zooming -->
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <!-- 
+  Bootstrap is designed to be responsive to mobile.
+  Mobile-first styles are part of the core framework.
+   
+  width=device-width sets the width of the page to follow the screen-width
+  initial-scale=1 sets the initial zoom level when the page is first loaded   
+  -->
+  
+  <meta name="author" content="Brooks Eason">
+  <meta name="author" content="Matthew Condecido">
+
+
+  <meta name="description" content="apple products">  
+    
+  <title>Bootstrap Starter HTML</title>
+  
+  <!-- 3. link bootstrap -->
+  <!-- if you choose to use CDN for CSS bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
+  <!-- 
+  Use a link tag to link an external resource. A rel (relationship) specifies relationship between the current document and the linked resource. 
+  -->
+  <link rel="stylesheet/less" type="text/css" href="styles.less" />
+
+  <!-- For development, we may want a better-printed CSS, but with larger download size.  Ignore "min"
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.css" rel="stylesheet"> 
+  -->
+  <!-- if you choose to download bootstrap and host it locally -->
+  <!-- <link rel="stylesheet" href="path-to-your-file/bootstrap.min.css" /> --> 
+  
+  <!-- include your CSS
+       by including your CSS last, anything you write may override (depending on specificity) the Bootstrap CSS
+  <link rel="stylesheet" href="your-custom.css" /> 
+  -->
+       
+</head>
+<body class="body">
+    <nav class="navbar navbar-expand-lg navbar-light" aria-label="Eleventh navbar example" id="nav">
+        <div class="container-fluid">
+          <a class="navbar-brand" href="home.html">
+            <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAh1BMVEX///8jHyAAAAAgHB0bFhfx8fESCw35+fkXEhMaFRYGAAARCgz29vYfGhsYEhStrKzAv7+Fg4RUUlJubG3q6uqjoqIuKyzf39/Ozs57enrW1tZHREUMAAU/PD2XlpaysbGPjo67u7tlZGRfXV5TUVGKiYk4NjaAfn8qJifIyMhzcXFFQkNjYWG6Qv/JAAAEp0lEQVR4nO3c2XaiQBAGYClaZBGjoBgV9yVOJu//fANJTIRxOWLFOhX+7zoXXZXeq7HRAAAAAAAAAAAAAAAAAAAAAAAAAACoh7Z0A4R1e1OypRshaTgickK7xjkYR+RaGTuUbomU5oqM9c5OpNsiZP7RB3Imkm6MjJisL52RdGtETNLvFFjpQLo5EqbOUQosepZuj4CokAKLpNsjYEuFFHRi6QY93p9iCiz6I92ih2uldiEFYQ13iSOn1A2epFv0cMPSSKhjN1i5pW5Qv9mgX+oG7kq6RY83CwopsJ2WdIseLykuCjSWbtDjlYYCzaUbJGBZyAHV8rBUmA7qmYLG6HtlNNSVbo2MtXdYEGjal26MkPXHFWJINdwhH0SB6QRE0/pmIJsTN1G8WNZ1FJzXbP7SWtt4vnhdT6J41r3wT28utxuHcslq1m0+rnUPsFwR+YFrQuNmgz9ZnNwQD2c7Isd87J1tL58lBr9lkPR7RJ3iuYjsWSm65mBHQVg8QlphQNFvOEm3Xqh0T/SehoA28+8T4nJNaTkBh43TX/WnqPmpDHxE59PbPOsN7WVM5J35o/cs6K46tdZkn4/O8nwyCZF74U9ywV7xtDD0roVn2ZdydBDqLTyN6fQYv52t9ZJxfHEc3Ejn/dKQMwVZT1C4Y2p1OFOQLQ8K36ZEnetx3cCmnroL5ye6HtcNOq6++aDJm4Jgoq4TNBox60jwNdaexqzdwFf5JmN9Yf9/M1flS71yOf0u4V46nEpezp0Vq6ChdDiVcHaDdCYdTSVdxhzYRjqaal4ZF0atpRef76Rg+9LBVMO5Kjhb6Wiqmft8OdB5bdBo9PhWRjuVDqaijWHLgdqXyynflBgofZjSYpwStb5MKT+6vCsHSqdEzqWRlBZXOO8ONF4m556RA94cKB0LrDnQeXfAmwO1ZUa+HPhKT86ca6P7Ih1NNZzllXAnHU1FnLeJWhfHkLHg7Cv9piPiOztbZiMdTTWoLjQaT4x3aZb7Kh1OJZybJK0doc2aAzORjqeSPetLJJ0feo2uvsy8LQkaRwNngcHK33cr3Chx3ijmTKLwNVLC+zTR8hJ9PWHBuUvKGVfdnMC7Q8iF+mrwAfNgyFCk7G6Rsez6xaOtqk/+eN8nHgSkKgl7rq83jin7ScFBej2kmyn7kQzmN9ufOZCO6kYx75kh52r7xu8HZkV9hfi/3LNiqO8iofyDgHfT+CZlx9sRQoXfdHF3BFpKB1TFhLHOoLXqxro0aK3Cv/KdnDxd2+Rvbb6vfbU+ysl/AIIpBb7Oj1nerXm+5lC5Lh4wjQaVFYYvLJ82keKRkBvdf5Hg6TsolNy9ZVb56w9FdxedtO6Ojt15bqCFdAAcZvckIVhLN5/HqHoS3Kl047nE55Jge06Qpo57bhfhaqw4n3GyJ3R8Mm/bwWCwiJPSL+t9Cn5NL8jNyhtGQxQf/YRouzsiKt830Jtgi3/Ac3C0WbIDmvx/LdSN6LhW6+grNV+1Jd/LQgw7KZnF6QNAf5aQ75jQNg5RT/3W6ITW01s2AvarwaUTUH/ei3a7zYvK20MAAAAAAAAAAAAAAAAAAAAAAAAAAPj0D0fdPqy0Dq1YAAAAAElFTkSuQmCC" alt="NBA Logo" width="100" class="d-inline-block align-middle mr-2">
+          </a>
+          <button
+            class="navbar-toggler"
+            type="button"
+            data-mdb-toggle="collapse"
+            data-mdb-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
+    
+          <div class="collapse navbar-collapse" id="navbarsExample09">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a class="nav-link active" aria-current="page" href="home.html" >Home</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="history.html">History</a>
+              </li>
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-link dropdown-toggle"
+                  href="#"
+                  id="dropdown09"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Devices
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="dropdown09">
+                  <li>
+                    <a class="dropdown-item" href="phones.html">Phones</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="tablets.html">Tablets</a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" href="computers.html">Computers</a>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul class="navbar-nav d-flex flex-row me-1">
+              <li class="nav-item me-3 me-lg-0">
+                <a class="nav-link" href="login.html"><i class="bi bi-person"></i></a>
+              </li>
+            </ul>
+            <form>
+              <input class="form-control" type="text" placeholder="Search" aria-label="Search">
+            </form>
+          </div>
+        </div>
+      </nav>
+      <h1 style="text-align: center;">
+          History
+      </h1>
+      <div class="accordion" id="accordionExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingOne">
+            <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Apple Founded
+            </button>
+          </h2>
+          <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>Apple was founded in 1976.</strong> The original founder was Steve Jobs. Jobs was a computer programmer and designer, and the company was based in San Francisco.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingTwo">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              First Computer
+            </button>
+          </h2>
+          <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>The Apple 1 was released in 1976.</strong> The Apple 1 was a personal computer that was designed and built by Steve Jobs and Steve Wozniak.
+            </div>
+          </div>
+        </div>
+        <div class="accordion-item">
+          <h2 class="accordion-header" id="headingThree">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              First Phone
+            </button>
+          </h2>
+          <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+            <div class="accordion-body">
+              <strong>The iPhone was announced on January 9, 2007.</strong> The first version of the iPhone became publicly available on June 29, 2007, in selected countries/markets. It was another 12 months before the iPhone 3G became available on July 11, 2008.
+            </div>
+          </div>
+        </div>
+      </div>
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>
+      <script src="https://cdn.jsdelivr.net/npm/less@4" ></script>
+</body>
