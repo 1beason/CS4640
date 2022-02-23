@@ -4,7 +4,7 @@
 */
 
 html, body, div, span, applet, object, iframe,
-h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
 del, dfn, em, img, ins, kbd, q, s, samp,
 small, strike, strong, sub, sup, tt, var,
@@ -156,8 +156,8 @@ nav ul > li {
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: -90px;
-	width: 25%;
-	height: 25%;
+	width: 15%;
+	height: 15%;
   }
 
 #jumbotronHome {
@@ -167,6 +167,19 @@ nav ul > li {
 #homeImage {
 	margin-top: -90px;
 	margin-left: 5%;
+}
+
+.card.sm-4 {
+	margin-top: -130px;
+	transition: .3s;
+}
+
+.card.sm-4:hover {
+	transform: scale(1.1);
+}
+
+.col-sm-4 {
+	height: 80%;
 }
 
 [class*="col-"] {
