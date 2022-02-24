@@ -1,7 +1,14 @@
-
+<!-- 
+Bootstrap elements added to our pages:
+  1. Navbar Element (index.html - line 72-101) 
+  2. Card with an Image (index.html - lines 126-133, index.html - lines 136-143)
+  3. Button Dropdowns (index.html - lines 89-99)
+  4. Media Object (index.html - lines 123-133)
+  5. Accordion (history.html - lines 115-152)
+-->
 <!-- 1. create HTML5 doctype -->
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">  
   
@@ -19,9 +26,9 @@
   <meta name="author" content="Matthew Condecido">
 
 
-  <meta name="description" content="apple products">  
+  <meta name="description" content="Mock Homepage for Apple Website">  
     
-  <title>Bootstrap Starter HTML</title>
+  <title>Apple Homepage</title>
   
   <!-- 3. link bootstrap -->
   <!-- if you choose to use CDN for CSS bootstrap -->
@@ -48,14 +55,13 @@
   <nav class="navbar navbar-expand-lg navbar-light" aria-label="Eleventh navbar example" id="nav">
     <div class="container-fluid">
       <a class="navbar-brand" href="index.html">
-        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAh1BMVEX///8jHyAAAAAgHB0bFhfx8fESCw35+fkXEhMaFRYGAAARCgz29vYfGhsYEhStrKzAv7+Fg4RUUlJubG3q6uqjoqIuKyzf39/Ozs57enrW1tZHREUMAAU/PD2XlpaysbGPjo67u7tlZGRfXV5TUVGKiYk4NjaAfn8qJifIyMhzcXFFQkNjYWG6Qv/JAAAEp0lEQVR4nO3c2XaiQBAGYClaZBGjoBgV9yVOJu//fANJTIRxOWLFOhX+7zoXXZXeq7HRAAAAAAAAAAAAAAAAAAAAAAAAAACoh7Z0A4R1e1OypRshaTgickK7xjkYR+RaGTuUbomU5oqM9c5OpNsiZP7RB3Imkm6MjJisL52RdGtETNLvFFjpQLo5EqbOUQosepZuj4CokAKLpNsjYEuFFHRi6QY93p9iCiz6I92ih2uldiEFYQ13iSOn1A2epFv0cMPSSKhjN1i5pW5Qv9mgX+oG7kq6RY83CwopsJ2WdIseLykuCjSWbtDjlYYCzaUbJGBZyAHV8rBUmA7qmYLG6HtlNNSVbo2MtXdYEGjal26MkPXHFWJINdwhH0SB6QRE0/pmIJsTN1G8WNZ1FJzXbP7SWtt4vnhdT6J41r3wT28utxuHcslq1m0+rnUPsFwR+YFrQuNmgz9ZnNwQD2c7Isd87J1tL58lBr9lkPR7RJ3iuYjsWSm65mBHQVg8QlphQNFvOEm3Xqh0T/SehoA28+8T4nJNaTkBh43TX/WnqPmpDHxE59PbPOsN7WVM5J35o/cs6K46tdZkn4/O8nwyCZF74U9ywV7xtDD0roVn2ZdydBDqLTyN6fQYv52t9ZJxfHEc3Ejn/dKQMwVZT1C4Y2p1OFOQLQ8K36ZEnetx3cCmnroL5ye6HtcNOq6++aDJm4Jgoq4TNBox60jwNdaexqzdwFf5JmN9Yf9/M1flS71yOf0u4V46nEpezp0Vq6ChdDiVcHaDdCYdTSVdxhzYRjqaal4ZF0atpRef76Rg+9LBVMO5Kjhb6Wiqmft8OdB5bdBo9PhWRjuVDqaijWHLgdqXyynflBgofZjSYpwStb5MKT+6vCsHSqdEzqWRlBZXOO8ONF4m556RA94cKB0LrDnQeXfAmwO1ZUa+HPhKT86ca6P7Ih1NNZzllXAnHU1FnLeJWhfHkLHg7Cv9piPiOztbZiMdTTWoLjQaT4x3aZb7Kh1OJZybJK0doc2aAzORjqeSPetLJJ0feo2uvsy8LQkaRwNngcHK33cr3Chx3ijmTKLwNVLC+zTR8hJ9PWHBuUvKGVfdnMC7Q8iF+mrwAfNgyFCk7G6Rsez6xaOtqk/+eN8nHgSkKgl7rq83jin7ScFBej2kmyn7kQzmN9ufOZCO6kYx75kh52r7xu8HZkV9hfi/3LNiqO8iofyDgHfT+CZlx9sRQoXfdHF3BFpKB1TFhLHOoLXqxro0aK3Cv/KdnDxd2+Rvbb6vfbU+ysl/AIIpBb7Oj1nerXm+5lC5Lh4wjQaVFYYvLJ82keKRkBvdf5Hg6TsolNy9ZVb56w9FdxedtO6Ojt15bqCFdAAcZvckIVhLN5/HqHoS3Kl047nE55Jge06Qpo57bhfhaqw4n3GyJ3R8Mm/bwWCwiJPSL+t9Cn5NL8jNyhtGQxQf/YRouzsiKt830Jtgi3/Ac3C0WbIDmvx/LdSN6LhW6+grNV+1Jd/LQgw7KZnF6QNAf5aQ75jQNg5RT/3W6ITW01s2AvarwaUTUH/ei3a7zYvK20MAAAAAAAAAAAAAAAAAAAAAAAAAAPj0D0fdPqy0Dq1YAAAAAElFTkSuQmCC" alt="NBA Logo" width="100" class="d-inline-block align-middle mr-2">
+        <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQMAAADCCAMAAAB6zFdcAAAAh1BMVEX///8jHyAAAAAgHB0bFhfx8fESCw35+fkXEhMaFRYGAAARCgz29vYfGhsYEhStrKzAv7+Fg4RUUlJubG3q6uqjoqIuKyzf39/Ozs57enrW1tZHREUMAAU/PD2XlpaysbGPjo67u7tlZGRfXV5TUVGKiYk4NjaAfn8qJifIyMhzcXFFQkNjYWG6Qv/JAAAEp0lEQVR4nO3c2XaiQBAGYClaZBGjoBgV9yVOJu//fANJTIRxOWLFOhX+7zoXXZXeq7HRAAAAAAAAAAAAAAAAAAAAAAAAAACoh7Z0A4R1e1OypRshaTgickK7xjkYR+RaGTuUbomU5oqM9c5OpNsiZP7RB3Imkm6MjJisL52RdGtETNLvFFjpQLo5EqbOUQosepZuj4CokAKLpNsjYEuFFHRi6QY93p9iCiz6I92ih2uldiEFYQ13iSOn1A2epFv0cMPSSKhjN1i5pW5Qv9mgX+oG7kq6RY83CwopsJ2WdIseLykuCjSWbtDjlYYCzaUbJGBZyAHV8rBUmA7qmYLG6HtlNNSVbo2MtXdYEGjal26MkPXHFWJINdwhH0SB6QRE0/pmIJsTN1G8WNZ1FJzXbP7SWtt4vnhdT6J41r3wT28utxuHcslq1m0+rnUPsFwR+YFrQuNmgz9ZnNwQD2c7Isd87J1tL58lBr9lkPR7RJ3iuYjsWSm65mBHQVg8QlphQNFvOEm3Xqh0T/SehoA28+8T4nJNaTkBh43TX/WnqPmpDHxE59PbPOsN7WVM5J35o/cs6K46tdZkn4/O8nwyCZF74U9ywV7xtDD0roVn2ZdydBDqLTyN6fQYv52t9ZJxfHEc3Ejn/dKQMwVZT1C4Y2p1OFOQLQ8K36ZEnetx3cCmnroL5ye6HtcNOq6++aDJm4Jgoq4TNBox60jwNdaexqzdwFf5JmN9Yf9/M1flS71yOf0u4V46nEpezp0Vq6ChdDiVcHaDdCYdTSVdxhzYRjqaal4ZF0atpRef76Rg+9LBVMO5Kjhb6Wiqmft8OdB5bdBo9PhWRjuVDqaijWHLgdqXyynflBgofZjSYpwStb5MKT+6vCsHSqdEzqWRlBZXOO8ONF4m556RA94cKB0LrDnQeXfAmwO1ZUa+HPhKT86ca6P7Ih1NNZzllXAnHU1FnLeJWhfHkLHg7Cv9piPiOztbZiMdTTWoLjQaT4x3aZb7Kh1OJZybJK0doc2aAzORjqeSPetLJJ0feo2uvsy8LQkaRwNngcHK33cr3Chx3ijmTKLwNVLC+zTR8hJ9PWHBuUvKGVfdnMC7Q8iF+mrwAfNgyFCk7G6Rsez6xaOtqk/+eN8nHgSkKgl7rq83jin7ScFBej2kmyn7kQzmN9ufOZCO6kYx75kh52r7xu8HZkV9hfi/3LNiqO8iofyDgHfT+CZlx9sRQoXfdHF3BFpKB1TFhLHOoLXqxro0aK3Cv/KdnDxd2+Rvbb6vfbU+ysl/AIIpBb7Oj1nerXm+5lC5Lh4wjQaVFYYvLJ82keKRkBvdf5Hg6TsolNy9ZVb56w9FdxedtO6Ojt15bqCFdAAcZvckIVhLN5/HqHoS3Kl047nE55Jge06Qpo57bhfhaqw4n3GyJ3R8Mm/bwWCwiJPSL+t9Cn5NL8jNyhtGQxQf/YRouzsiKt830Jtgi3/Ac3C0WbIDmvx/LdSN6LhW6+grNV+1Jd/LQgw7KZnF6QNAf5aQ75jQNg5RT/3W6ITW01s2AvarwaUTUH/ei3a7zYvK20MAAAAAAAAAAAAAAAAAAAAAAAAAAPj0D0fdPqy0Dq1YAAAAAElFTkSuQmCC" alt="Apple Logo" width="100" class="d-inline-block align-middle mr-2">
       </a>
       <button
         class="navbar-toggler"
         type="button"
         data-mdb-toggle="collapse"
         data-mdb-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
         aria-expanded="false"
         aria-label="Toggle navigation"
       >
@@ -82,13 +88,13 @@
             </a>
             <ul class="dropdown-menu" aria-labelledby="dropdown09">
               <li>
-                <a class="dropdown-item" href="phones.html">Phones</a>
+                <a class="dropdown-item">Phones</a>
               </li>
               <li>
-                <a class="dropdown-item" href="tablets.html">Tablets</a>
+                <a class="dropdown-item">Tablets</a>
               </li>
               <li>
-                <a class="dropdown-item" href="computers.html">Computers</a>
+                <a class="dropdown-item">Computers</a>
               </li>
             </ul>
           </li>
@@ -106,21 +112,21 @@
   </nav>
   <div class="media">
     <a class="pull-left" href="#">
-      <img class="media-object" src="https://images.macrumors.com/t/yh46rIQZo1LNLZ1kZzJm8wkruWY=/1600x900/smart/article-new/2018/12/appleproductlineup.jpg" alt="avatar" width="500" height="300">
+      <img class="media-object" src="https://images.macrumors.com/t/yh46rIQZo1LNLZ1kZzJm8wkruWY=/1600x900/smart/article-new/2018/12/appleproductlineup.jpg" alt="Apple Devices" width="500" height="300">
     </a>
     <div class="media-body">
-      <h4 class="media-heading">
+      <h1 class="media-heading">
         Timeline
-      </h4>
+      </h1>
       Apple Inc. is an American multinational technology company headquartered in Cupertino, California, that designs, develops, and sells consumer electronics, computer software, and online services. It is considered one of the Big Four technology companies, alongside Amazon, Google, and Facebook.
     </div>
   </div>
   <div class="row">
     <div class="col-sm-6">
       <div class="card">
-        <img class="card-img-top" src="https://cdn.idropnews.com/wp-content/uploads/2021/10/05102831/Steve-Jobs-8.jpg" alt="Card image cap">
+        <img class="card-img-top" src="https://cdn.idropnews.com/wp-content/uploads/2021/10/05102831/Steve-Jobs-8.jpg" alt="Steve Jobs Holding an iPhone">
         <div class="card-body">
-          <h5 class="card-title">Founder</h5>
+          <h2 class="card-title">Founder</h2>
           <p class="card-text">Steve Jobs founded Apple in 1976</p>
           <a href="about.html" class="btn btn-primary">Learn more</a>
         </div>
@@ -128,9 +134,9 @@
     </div>
     <div class="col-sm-6">
       <div class="card">
-        <img class="card-img-top" src="https://images.macrumors.com/t/tPs8l2JMLfvLxuKyNWDbD49Dv5I=/1600x1200/smart/article-new/2019/01/macintosh-1984.jpg" alt="Card image cap">
+        <img class="card-img-top" src="https://images.macrumors.com/t/tPs8l2JMLfvLxuKyNWDbD49Dv5I=/1600x1200/smart/article-new/2019/01/macintosh-1984.jpg" alt="The First Macintosh">
         <div class="card-body">
-          <h5 class="card-title">Devices</h5>
+          <h2 class="card-title">Devices</h2>
           <p class="card-text">Over the years Apple has released many devices, starting with computers, and now with smart watch and home devices.</p>
           <a href="about.html" class="btn btn-primary">Learn more</a>
         </div>
