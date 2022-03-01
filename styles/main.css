@@ -154,6 +154,7 @@ nav ul > li {
 	padding: 0.5em;
 }
 
+
 .center {
 	display: block;
 	margin-left: auto;
@@ -190,10 +191,6 @@ thead tr:first-of-type {
 	font-weight: bold;
 }
 
-
-[class*="col-"] {
-	width: 100%;
-} 
 @media only screen and (max-width: 768px) {
 	/* For mobile phones and tablets: */
 	[class*="col-"] {
@@ -203,12 +200,14 @@ thead tr:first-of-type {
 		width: 100%;
 	}
 }
+/*
 @media only screen and (min-width: 768px) {
 	[class*="col-"] {
-		width: 33.33%;
+		width: 25%;
 		float:left;
 	}
 }
+*/
 @media only screen and (max-width: 600px) {
 	#fadeshow {
 		display: none;
