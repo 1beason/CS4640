@@ -32,7 +32,7 @@ class WordGameController {
         if (isset($_POST["email"]) && !empty($_POST["email"])) {
             setcookie("email", $_POST["email"], time() + 3600);
             setcookie("name", $_POST["name"], time() + 3600);
-            setcookie("guesses", [], time() + 3600);
+            setcookie("guesses", " ", time() + 3600);
             header("Location: ?command=play");
             return;
         }
@@ -44,19 +44,19 @@ class WordGameController {
     private function logout() {
         setcookie("email", "", time() - 3600);
         setcookie("name", "", time() - 3600);
-        setcookie("guesses", [], time() - 3600);
+        setcookie("guesses", "", time() - 3600);
         include('templates/login.php');
     }
 
 
     private function genWord() {
-        $words = file("https://cs4640.cs.virginia.edu/homework/wordlist.txt");
+        $words = file("http://www.cs.virginia.edu/~jh2jf/courses/cs4640/spring2022/wordlist.txt");
         $word = $words[rand(0, count($words) - 1)];
         return $word;
     }
 
     public function play() {
-        $word = genWord();
+        $word = $this->genWord();
         setcookie("answer", $word, time() + 3600);
 
         $user = [
@@ -67,7 +67,7 @@ class WordGameController {
 
         if (isset($_POST["guess"]) && !empty($_POST["guess"])) {
             $guess = $_POST["guess"];
-            array_push($user["guesses"], $guess);
+            $_COOKIE["guesses"] .= $guess . " ";
             if (strtolower($guess) == strtolower($word)) {
                 setcookie("guesses", $user["guesses"], time() + 3600);
                 include('templates/gameOver.php');
