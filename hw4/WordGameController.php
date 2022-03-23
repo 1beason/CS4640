@@ -30,9 +30,11 @@ class WordGameController {
 
     public function login() {
         if (isset($_POST["email"]) && !empty($_POST["email"])) {
-            setcookie("email", $_POST["email"], time() + 3600);
-            setcookie("name", $_POST["name"], time() + 3600);
-            setcookie("guesses", " ", time() + 3600);
+            // set the email in the session
+            $_SESSION["email"] = $_POST["email"];
+            // set the name in the session
+            $_SESSION["name"] = $_POST["name"];
+            // redirect to the play page
             header("Location: ?command=play");
             return;
         }
@@ -42,9 +44,8 @@ class WordGameController {
 
 
     private function logout() {
-        setcookie("email", "", time() - 3600);
-        setcookie("name", "", time() - 3600);
-        setcookie("guesses", "", time() - 3600);
+        // destroy the session
+        session_destroy();
         include('templates/login.php');
     }
 
@@ -57,23 +58,25 @@ class WordGameController {
 
     public function play() {
         $word = $this->genWord();
-        setcookie("answer", $word, time() + 3600);
+        $_SESSION["answer"] = $word;
+        $_SESSION["numGuesses"] = 0;
+        $_SESSION["correct"] = false;
+        $_SESSION["guesses"] = array();
 
         $user = [
-            "email" => $_COOKIE["email"],
-            "name" => $_COOKIE["name"],
-            "guesses" => $_COOKIE["guesses"]
+            "email" => $_SESSION["email"],
+            "name" => $_SESSION["name"],
+            "guesses" => $_SESSION["guesses"]
         ];
 
         if (isset($_POST["guess"]) && !empty($_POST["guess"])) {
             $guess = $_POST["guess"];
-            $_COOKIE["guesses"] .= $guess . " ";
+            array_push($_SESSION["guesses"], $guess);
             if (strtolower($guess) == strtolower($word)) {
-                setcookie("guesses", $user["guesses"], time() + 3600);
+                $_SESSION["correct"] = true;
                 include('templates/gameOver.php');
                 return;
             } else {
-                setcookie("guesses", $user["guesses"], time() + 3600);
                 $num_exactly_right = 0;
                 $num_in_word = 0;
                 $long = strlen($guess) > strlen($word) ? true : false;
@@ -94,9 +97,9 @@ class WordGameController {
                     }
                     $idx++;
                 }
-                setcookie("num_exactly_right", $num_exactly_right, time() + 3600);
-                setcookie("num_in_word", $num_in_word, time() + 3600);
-                setcookie("long", $long, time() + 3600);
+                $_SESSION["num_exactly_right"] = $num_exactly_right;
+                $_SESSION["num_in_word"] = $num_in_word;
+                $_SESSION["long"] = $long;
                 include('templates/play.php');
             }
         }

@@ -10,7 +10,7 @@
     </head>
     <body>
         <div class="container" style="margin-top: 15px;">
-            <div class="row col-xs-8">
+            <div class="row text-center">
                 <h1>CS4640 Word Game - Log In</h1>
                 <p> Welcome to the word game!  To get started, enter a username and password.</p>
             </div>
