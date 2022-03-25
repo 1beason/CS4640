@@ -16,15 +16,25 @@
                     if ($_SESSION["correct"] == "true") {
                         echo "<h1>You won!</h1>";
                         echo "<h2>Congratulations! You guessed correctly!<h2>";
-                        echo "<p>It took you " . $_SESSION["numGuesses"] . " guesses to guess the word " . $_SESSION["answer"] . "</p>";
+                        echo "<p>It took you " . $_SESSION["numGuesses"] . " guesses to guess the word " . $_SESSION["word"] . "</p>";
                     } else {
                         echo "<h1>You quit!</h1>";
-                        echo "<p>Sorry, you didn't guess correctly.  The correct word was: " . $_SESSION["answer"] . "</p>";
+                        echo "<p>Sorry, you didn't guess correctly.  The correct word was: " . $_SESSION["word"] . "</p>";
                     }
                 ?>
             </div>
             <div class="row">
                 <div class="text-center">
+                    <?php
+                    $_SESSION["numGuesses"] = 0;
+                        $_SESSION["guesses"] = array();
+                        $word = $this->genWord();
+                        if ($word == null) {
+                            die("The word list is not available");
+                        }
+                        $_SESSION["word"] = $word;
+                        $_SESSION["correct"] = false;
+                    ?>
                     <a href="?command=play" class="btn btn-primary">Play Again</a>
                     <a href="?command=logout" class="btn btn-danger">Log Out</a>
                 </div>
