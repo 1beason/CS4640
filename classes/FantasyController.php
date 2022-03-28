@@ -1,6 +1,6 @@
 <?php
 
-class WordGameController {
+class FantasyController {
     private $command;
     private $prevCommand;
     private $db;
