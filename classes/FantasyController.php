@@ -7,6 +7,9 @@ class FantasyController {
 
     public function __construct($command) {
         $this->command = $command;
+        $this->db = new Database();
+
+       
     }
 
     public function run() {
