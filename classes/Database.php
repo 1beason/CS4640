@@ -1,4 +1,5 @@
 <?php
+include ("API.php");
 
 class Database {
     private $mysqli;
@@ -56,7 +57,6 @@ class Database {
                 GB decimal(10,2) not null,
                 primary key (id)
             )");
-
             $this->query("CREATE TABLE last_update (
                 id int not null auto_increment,
                 date text not null,
@@ -96,10 +96,11 @@ class Database {
 
     // parse the api response for player season stats and put relevant info into the database
     function insertPlayers() {
-        $reponse = API::getPlayerSeasonStats();
+        $object = new API();
+        $response = $object -> getPlayerSeasonStats();
 
         // iterate over response
-        foreach ($reponse as $player) {
+        foreach ($response as $player) {
             $games = $player["Games"] > 0 ? $player["Games"] : 1;
             // get the player id
             $id = $player["PlayerID"];
@@ -128,10 +129,10 @@ class Database {
     }
 
     function updatePlayers() {
-        $reponse = API::getPlayerSeasonStats();
-
+        $object = new API();
+        $response = $object -> getPlayerSeasonStats();
         // iterate over response
-        foreach ($reponse as $player) {
+        foreach ($response as $player) {
             $games = $player["Games"] > 0 ? $player["Games"] : 1;
             // get the player id
             $id = $player["PlayerID"];
@@ -161,8 +162,8 @@ class Database {
 
 
     function insertTeams() {
-        $response = API::getTeamStandings();
-
+        $object = new API();
+        $response = $object -> getTeamStandings();
         // iterate over response
         foreach ($response as $team) {
             // get the team id
@@ -182,7 +183,8 @@ class Database {
     }
 
     function updateTeams() {
-        $response = API::getTeamStandings();
+        $object = new API();
+        $response = $object -> getTeamStandings();
 
         // iterate over response
         foreach ($response as $team) {

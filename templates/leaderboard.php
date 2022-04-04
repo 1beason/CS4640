@@ -19,7 +19,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light" aria-label="Eleventh navbar example" id="nav">
       <div class="container-fluid">
-        <a class="navbar-brand" href="home.html">
+        <a class="navbar-brand" href="?command=home">
           <img src="https://library.sportingnews.com/2021-08/nba-75-logo_xiyzcva3x0eo1c45w97bgdhv0.jpg" alt="NBA Logo" width="100" class="d-inline-block align-middle mr-2">
         </a>
         <button
@@ -37,10 +37,10 @@
         <div class="collapse navbar-collapse" id="navbar">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a class="nav-link active" aria-current="page" href="home.html" >Home</a>
+              <a class="nav-link active" aria-current="page" href="?command=home" >Home</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="fantasy.html">Fantasy Dashboard</a>
+              <a class="nav-link" href="?command=fantasy">Fantasy Dashboard</a>
             </li>
             <li class="nav-item dropdown">
               <a
@@ -81,7 +81,8 @@
     </nav>
     <h1>2021-2022 Eastern Conference Playoff Standings</h1>
     <div class="container">
-    <table class="table table-hover table-striped">
+    
+      <table class="table table-hover table-striped">
       <thead class="thead-inverse">
         <tr>
           <th>#</th>

@@ -4,7 +4,7 @@ session_start();
 
 // Register the autoloader
 spl_autoload_register(function($classname) {
-    include "$classname.php";
+    include "classes/$classname.php";
 });
 // Parse the query string for command
 $command = "login";

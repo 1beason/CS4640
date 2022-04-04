@@ -19,7 +19,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-light" aria-label="Eleventh navbar example" id="nav">
         <div class="container-fluid">
-          <a class="navbar-brand" href="home.html">
+          <a class="navbar-brand" href="?command=home">
             <img src="https://library.sportingnews.com/2021-08/nba-75-logo_xiyzcva3x0eo1c45w97bgdhv0.jpg" alt="NBA Logo" width="100" class="d-inline-block align-middle mr-2">
           </a>
           <button
@@ -39,7 +39,7 @@
                 <a class="nav-link active" aria-current="page" href="home.html" >Home</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="fantasy.html">Fantasy Dashboard</a>
+                <a class="nav-link" href="?command=fantasy">Fantasy Dashboard</a>
               </li>
               <li class="nav-item dropdown">
                 <a
@@ -56,7 +56,7 @@
                     <a class="dropdown-item" href="players.html">Players</a>
                   </li>
                   <li>
-                    <a class="dropdown-item" href="leaderboard.html">Teams</a>
+                    <a class="dropdown-item" href="?command=leaderboard">Teams</a>
                   </li>
                   <li>
                     <a class="dropdown-item" href="games.html">Games</a>

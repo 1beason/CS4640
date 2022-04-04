@@ -26,6 +26,9 @@ class FantasyController {
             case "home":
                 $this->home();
                 break;
+            case "leaderboard":
+                $this->leaderboard();
+                break;
             default:
                 $this->home();
                 break;
@@ -40,6 +43,18 @@ class FantasyController {
     public function fantasy() {
         $this->prevCommand = "fantasy";
         include('templates/fantasy.php');
+    }
+
+    public function leaderboard() {
+        $this->prevCommand = "leaderboard";
+        $data1 = $this->db->query("select name from teams");
+        if ($data === false) {
+            $error_msg = "Error checking for teams";
+        } else if (!empty($data)) {
+            $team_data = $data;
+        }
+
+        include('templates/leaderboard.php');
     }
 
 
