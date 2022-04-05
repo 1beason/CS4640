@@ -15,7 +15,7 @@ if (isset($_GET["command"]))
 // a valid session (they didn't get here from the login page),
 // so we should send them over to log in first before doing
 // anything else!
-if (!isset($_SESSION["email"]) && $command === "fantasy") {
+if (!isset($_SESSION["username"]) && $command === "fantasy") {
     // they need to see the login
     $command = "login";
 }

@@ -17,7 +17,7 @@ class Database {
             $this->query("CREATE TABLE users (
                 id int not null auto_increment,
                 name text not null,
-                email text not null,
+                username text not null,
                 password text not null,
                 primary key (id)
             )");

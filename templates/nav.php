@@ -12,8 +12,7 @@
             aria-expanded="false"
             aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
-          </button>
-  
+          </button>  
           <div class="collapse navbar-collapse" id="navbar">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
@@ -49,9 +48,21 @@
               </li>
             </ul>
             <ul class="navbar-nav d-flex flex-row me-1">
-              <li class="nav-item me-3 me-lg-0">
-                <a class="nav-link" href="?command=login"><i class="bi bi-person"></i><span class="visually-hidden">Profile</span></a>
-              </li>
+                <?php
+                if (isset($_SESSION['name'])) {
+                  echo "<li class='nav-item me-3 me-lg-0'>";
+                  echo "<a class='nav-link' href='?command=profile'>{$_SESSION['name']}</a>";
+                  echo "</li>";
+                  echo "<li class='nav-item me-3 me-lg-0'>";
+                  echo "<a class='nav-link' href='?command=logout'>Logout</a>";
+                  echo "</li>";
+
+                } else {
+                  echo "<li class='nav-item me-3 me-lg-0'>";
+                  echo '<a class="nav-link" href="?command=login"><i class="bi bi-person"></i><span class="visually-hidden">Profile</span></a>';
+                  echo "</li>";
+                }
+              ?>
             </ul>
             <form>
               <input class="form-control" type="text" placeholder="Search" aria-label="Search">

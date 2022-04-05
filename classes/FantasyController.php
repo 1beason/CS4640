@@ -83,24 +83,41 @@ class FantasyController {
 
 
     public function login() {
-        if (isset($_POST["email"]) && !empty($_POST["email"])) {
-            // set the email in the session
-            $_SESSION["email"] = $_POST["email"];
-            // set the name in the session
-            $_SESSION["name"] = $_POST["name"];
-            // redirect to the play page
-
-            header("Location: ?command={$this->prevCommand}");
-            return;
-        }
-
-        include('templates/login.php');
+        $error_msg = "";
+        if (isset($_POST["username"])) {
+            $data = $this->db->query("select * from users where username = ?;", "s", $_POST["username"]);
+            if ($data === false) {
+                $error_msg = "Error checking for user";
+            } else if (!empty($data)) {
+                if (password_verify($_POST["password"], $data[0]["password"])) {
+                    $_SESSION["name"] = $data[0]["name"];
+                    $_SESSION['username'] = $data[0]["username"];
+                    header("Location: ?command={$this->prevCommand}");
+                } else {
+                    $error_msg = "Wrong password";
+                }
+            } else { // empty, no user found
+                // TODO: input validation
+                // Note: never store clear-text passwords in the database
+                //       PHP provides password_hash() and password_verify()
+                //       to provide password verification
+                $insert = $this->db->query("insert into users (name, username, password) values (?, ?, ?);", 
+                        "sss", $_POST["name"], $_POST["username"], password_hash($_POST["password"], PASSWORD_DEFAULT));
+                if ($insert === false) {
+                    $error_msg = "Error inserting user";
+                } else {
+                    $_SESSION["name"] = $data[0]["name"];
+                    $_SESSION['username'] = $data[0]["username"];
+                    header("Location: ?command={$this->prevCommand}");
+                }
+            }
+        }        include('templates/login.php');
     }
 
 
     private function logout() {
         // destroy the session
         session_destroy();
-        include('templates/login.php');
+        header("Location: ?command={$this->prevCommand}");
     }
 }
