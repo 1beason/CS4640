@@ -29,6 +29,12 @@ class FantasyController {
             case "leaderboard":
                 $this->leaderboard();
                 break;
+            case "topScorersRaw":
+                $this->topScorersRaw();
+                break;
+            case "filterRaw":
+                $this->filterRaw();
+                break;
             default:
                 $this->home();
                 break;
@@ -47,26 +53,39 @@ class FantasyController {
         $positions = $this->db->query("select distinct position from players");
 
         $pointsFilter = isset($_POST['pointsFilter']) ? 
-                        $_POST['pointsFilter'] == 'Highest to Lowest' ? 'desc' : ''
-                        : 'desc';
+            $_POST['pointsFilter'] == 'Highest to Lowest' ? 'desc' : ''
+            : 'desc';
+
         $teamFilter = isset($_POST['teamFilter']) ? 
-                    $_POST['teamFilter'] == 'All' ? false : $_POST['teamFilter']
-                    : false;
-        $positionFilter = isset($_POST['positionFilter']) ? 
-                            $_POST['positionFilter'] == 'All' ? false : $_POST['positionFilter']
-                            : false;
+            $_POST['teamFilter'] == 'All' ? false : $_POST['teamFilter']
+            : false;
         
+        $positionFilter = isset($_POST['positionFilter']) ? 
+            $_POST['positionFilter'] == 'All' ? false : $_POST['positionFilter']
+            : false;
+
         if ($teamFilter && $positionFilter) {
-            $players = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' and position = '$positionFilter' order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' and position = '$positionFilter' order by fp $pointsFilter");
         } else if ($teamFilter) {
-            $players = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' order by fp $pointsFilter");
         } else if ($positionFilter) {
-            $players = $this->db->query("select name, position, team, fp from players where position = '$positionFilter' order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where position = '$positionFilter' order by fp $pointsFilter");
         } else {
-            $players = $this->db->query("select name, position, team, fp from players order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players order by fp $pointsFilter");
         }
 
         include('templates/fantasy.php');
+    }
+
+    public function topScorersRaw() {
+        $top_scorers = $this->db->query("select name, position, team, fp from players order by fp desc, position limit 5");
+        header('Content-Type: application/json');
+        return print_r(json_encode($top_scorers, JSON_PRETTY_PRINT));
+    }
+
+    public function filterRaw() {
+        header('Content-Type: application/json');
+        return print_r(json_encode($_SESSION['players'], JSON_PRETTY_PRINT));
     }
 
     public function leaderboard() {
