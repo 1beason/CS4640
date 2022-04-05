@@ -13,20 +13,7 @@ class Database {
          // check if users table exists in the database
          try { 
             $this->query("SELECT * FROM users LIMIT 1");
-            $this->query("SELECT * FROM players LIMIT 1");
-            $this->query("SELECT * FROM teams LIMIT 1");
-            $last_update = $this->query("SELECT date FROM last_update LIMIT 1");
-
-            // if last update was more than a day ago, update the tables
-            if ($last_update < date("Y-m-d", strtotime("-1 day"))) {
-                $this->updatePlayers();
-                $this->updateTeams();
-                $this->updateLastUpdate();
-            }
-            // table exists
-        } catch (Exception $e) {
-            // table does not exist
-            // create the table
+         } catch (Exception $e){
             $this->query("CREATE TABLE users (
                 id int not null auto_increment,
                 name text not null,
@@ -34,7 +21,11 @@ class Database {
                 password text not null,
                 primary key (id)
             )");
+         }
 
+         try {
+            $this->query("SELECT * FROM players LIMIT 1");
+         } catch (Exception $e) {
             $this->query("CREATE TABLE players (
                 id int not null auto_increment,
                 name text not null,
@@ -48,7 +39,11 @@ class Database {
                 fp decimal(10,2) not null,
                 primary key (id)
             )");
+         }
 
+         try {
+            $this->query("SELECT * FROM teams LIMIT 1");
+         } catch (Exception $e) {
             $this->query("CREATE TABLE teams (
                 id int not null,
                 name text not null,
@@ -57,8 +52,22 @@ class Database {
                 GB decimal(10,2) not null,
                 primary key (id)
             )");
+         }
+         
+         try {
+            $last_update = $this->query("SELECT date FROM last_update LIMIT 1");
+
+            // if last update was more than a day ago, update the tables
+            if ($last_update[0]["date"] < date("Y-m-d", strtotime("-1 day"))) {
+                $this->updatePlayers();
+                $this->updateTeams();
+                $this->updateLastUpdate();
+            }
+            // table exists
+        } catch (Exception $e) {
+            // table does not exist
             $this->query("CREATE TABLE last_update (
-                id int not null auto_increment,
+                id int not null,
                 date text not null,
                 primary key (id)
             )");
@@ -156,7 +165,7 @@ class Database {
             $fp = $player["FantasyPoints"];
 
             // insert the player into the database
-            $this->query("INSERT INTO players (id, name, team, position, ppg, apg, rpg, bpg, spg, fp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", "isssdddddd", $id, $name, $team, $position, $ppg, $apg, $rpg, $bpg, $spg, $fp);
+            $this->query("REPLACE INTO players (id, name, team, position, ppg, apg, rpg, bpg, spg, fp) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", "isssdddddd", $id, $name, $team, $position, $ppg, $apg, $rpg, $bpg, $spg, $fp);
         }
     }
 
@@ -208,13 +217,13 @@ class Database {
         $date = date("Y-m-d");
 
         // insert the team into the database
-        $this->query("INSERT INTO last_update (date) VALUES (?)", "s", $date);
+        $this->query("INSERT INTO last_update (id, date) VALUES (?, ?)", "is", 1, $date);
     }
 
     function updateLastUpdate() {
         $date = date("Y-m-d");
 
         // insert the team into the database
-        $this->query("REPLACE INTO last_update (date) VALUES (?)", "s", $date);
+        $this->query("REPLACE INTO last_update (id, date) VALUES (?, ?)", "is", 1, $date);
     }
 }

@@ -42,12 +42,36 @@ class FantasyController {
 
     public function fantasy() {
         $this->prevCommand = "fantasy";
+        $top_scorers = $this->db->query("select name, position, team, fp from players order by fp desc, position limit 5");
+        $teams = $this->db->query("select distinct team from players");
+        $positions = $this->db->query("select distinct position from players");
+
+        $pointsFilter = isset($_POST['pointsFilter']) ? 
+                        $_POST['pointsFilter'] == 'Highest to Lowest' ? 'desc' : ''
+                        : 'desc';
+        $teamFilter = isset($_POST['teamFilter']) ? 
+                    $_POST['teamFilter'] == 'All' ? false : $_POST['teamFilter']
+                    : false;
+        $positionFilter = isset($_POST['positionFilter']) ? 
+                            $_POST['positionFilter'] == 'All' ? false : $_POST['positionFilter']
+                            : false;
+        
+        if ($teamFilter && $positionFilter) {
+            $players = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' and position = '$positionFilter' order by fp $pointsFilter");
+        } else if ($teamFilter) {
+            $players = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' order by fp $pointsFilter");
+        } else if ($positionFilter) {
+            $players = $this->db->query("select name, position, team, fp from players where position = '$positionFilter' order by fp $pointsFilter");
+        } else {
+            $players = $this->db->query("select name, position, team, fp from players order by fp $pointsFilter");
+        }
+
         include('templates/fantasy.php');
     }
 
     public function leaderboard() {
         $this->prevCommand = "leaderboard";
-        $data1 = $this->db->query("select name from teams");
+        $data = $this->db->query("select name from teams");
         if ($data === false) {
             $error_msg = "Error checking for teams";
         } else if (!empty($data)) {
