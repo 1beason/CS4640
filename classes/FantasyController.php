@@ -32,6 +32,12 @@ class FantasyController {
             case "players":
                 $this -> players();
                 break;
+            case "topScorersRaw":
+                $this->topScorersRaw();
+                break;
+            case "filterRaw":
+                $this->filterRaw();
+                break;
             default:
                 $this->home();
                 break;
@@ -45,11 +51,48 @@ class FantasyController {
 
     public function fantasy() {
         $this->prevCommand = "fantasy";
+        $top_scorers = $this->db->query("select name, position, team, fp from players order by fp desc, position limit 5");
+        $teams = $this->db->query("select distinct team from players");
+        $positions = $this->db->query("select distinct position from players");
+
+        $pointsFilter = isset($_POST['pointsFilter']) ? 
+            $_POST['pointsFilter'] == 'Highest to Lowest' ? 'desc' : ''
+            : 'desc';
+
+        $teamFilter = isset($_POST['teamFilter']) ? 
+            $_POST['teamFilter'] == 'All' ? false : $_POST['teamFilter']
+            : false;
+        
+        $positionFilter = isset($_POST['positionFilter']) ? 
+            $_POST['positionFilter'] == 'All' ? false : $_POST['positionFilter']
+            : false;
+
+        if ($teamFilter && $positionFilter) {
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' and position = '$positionFilter' order by fp $pointsFilter");
+        } else if ($teamFilter) {
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' order by fp $pointsFilter");
+        } else if ($positionFilter) {
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where position = '$positionFilter' order by fp $pointsFilter");
+        } else {
+            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players order by fp $pointsFilter");
+        }
+
         include('templates/fantasy.php');
     }
     public function players() {
         $this->prevCommand = "players";
         include('templates/players.php');
+    }
+
+    public function topScorersRaw() {
+        $top_scorers = $this->db->query("select name, position, team, fp from players order by fp desc, position limit 5");
+        header('Content-Type: application/json');
+        return print_r(json_encode($top_scorers, JSON_PRETTY_PRINT));
+    }
+
+    public function filterRaw() {
+        header('Content-Type: application/json');
+        return print_r(json_encode($_SESSION['players'], JSON_PRETTY_PRINT));
     }
 
     public function leaderboard() {
@@ -80,24 +123,41 @@ class FantasyController {
 
 
     public function login() {
-        if (isset($_POST["email"]) && !empty($_POST["email"])) {
-            // set the email in the session
-            $_SESSION["email"] = $_POST["email"];
-            // set the name in the session
-            $_SESSION["name"] = $_POST["name"];
-            // redirect to the play page
-
-            header("Location: ?command={$this->prevCommand}");
-            return;
-        }
-
-        include('templates/login.php');
+        $error_msg = "";
+        if (isset($_POST["username"])) {
+            $data = $this->db->query("select * from users where username = ?;", "s", $_POST["username"]);
+            if ($data === false) {
+                $error_msg = "Error checking for user";
+            } else if (!empty($data)) {
+                if (password_verify($_POST["password"], $data[0]["password"])) {
+                    $_SESSION["name"] = $data[0]["name"];
+                    $_SESSION['username'] = $data[0]["username"];
+                    header("Location: ?command={$this->prevCommand}");
+                } else {
+                    $error_msg = "Wrong password";
+                }
+            } else { // empty, no user found
+                // TODO: input validation
+                // Note: never store clear-text passwords in the database
+                //       PHP provides password_hash() and password_verify()
+                //       to provide password verification
+                $insert = $this->db->query("insert into users (name, username, password) values (?, ?, ?);", 
+                        "sss", $_POST["name"], $_POST["username"], password_hash($_POST["password"], PASSWORD_DEFAULT));
+                if ($insert === false) {
+                    $error_msg = "Error inserting user";
+                } else {
+                    $_SESSION["name"] = $data[0]["name"];
+                    $_SESSION['username'] = $data[0]["username"];
+                    header("Location: ?command={$this->prevCommand}");
+                }
+            }
+        }        include('templates/login.php');
     }
 
 
     private function logout() {
         // destroy the session
         session_destroy();
-        include('templates/login.php');
+        header("Location: ?command={$this->prevCommand}");
     }
 }
