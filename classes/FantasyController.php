@@ -38,6 +38,12 @@ class FantasyController {
             case "filterRaw":
                 $this->filterRaw();
                 break;
+            case "addPlayer":
+                $this->addPlayer();
+                break;
+            case "profile":
+                $this->profile();
+                break;
             default:
                 $this->home();
                 break;
@@ -68,13 +74,13 @@ class FantasyController {
             : false;
 
         if ($teamFilter && $positionFilter) {
-            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' and position = '$positionFilter' order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select id, name, position, team, fp from players where team = '$teamFilter' and position = '$positionFilter' order by fp $pointsFilter");
         } else if ($teamFilter) {
-            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where team = '$teamFilter' order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select id, name, position, team, fp from players where team = '$teamFilter' order by fp $pointsFilter");
         } else if ($positionFilter) {
-            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players where position = '$positionFilter' order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select id, name, position, team, fp from players where position = '$positionFilter' order by fp $pointsFilter");
         } else {
-            $_SESSION['players'] = $this->db->query("select name, position, team, fp from players order by fp $pointsFilter");
+            $_SESSION['players'] = $this->db->query("select id, name, position, team, fp from players order by fp $pointsFilter");
         }
 
         include('templates/fantasy.php');
@@ -152,6 +158,44 @@ class FantasyController {
                 }
             }
         }        include('templates/login.php');
+    }
+
+    public function addPlayer() {
+        if (!isset($_GET['id']) || !isset($_SESSION['username'])) {
+            header("Location: ?command=home");
+        }
+        $id = $_GET['id'];
+
+        $exists = $this->db->query("select * from userTeams where username = ? and playerd = ?;", "si", $_SESSION['username'], $id);
+        if (empty($exists)) {
+            $insert = $this->db->query("insert into userTeams (username, playerId) values (?, ?);", "si", $_SESSION['username'], $id);
+            if ($insert === false) {
+                $error_msg = "Error inserting user";
+            } else {
+                header("Location: ?command=fantasy");
+            }
+        } else {
+            header("Location: ?command=fantasy");
+        }
+    }
+
+    public function profile() {
+        $this->prevCommand = "profile";
+        $data = $this->db->query("select playerId from userTeams where username = ?;", "s", $_SESSION['username']);
+        if ($data === false) {
+            $error_msg = "Error checking for user";
+        } else if (!empty($data)) {
+
+            $players = [];
+            foreach($data as $id) {
+                $player = $this->db->query("select name, position, team, fp from players where id = ?;", "i", $id['playerId']);
+                array_push($players, $player);
+            }
+        }
+        else{
+            $user_data = array();
+        }
+        include('templates/profile.php');
     }
 
 

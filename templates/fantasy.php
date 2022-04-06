@@ -12,7 +12,64 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
     <link href="styles/main.css" rel="stylesheet">
+    <style>
+    /* Popup Styling Copied From https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup */
+.popup {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
 
+/* The actual popup */
+.popup .popuptext {
+  visibility: hidden;
+  width: 180px;
+  background-color: #555;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  margin-left: -5px;
+  border-width: 5px;
+  border-style: solid;
+  border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+  visibility: visible;
+  -webkit-animation: fadeIn 1s;
+  animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+  from {opacity: 0;} 
+  to {opacity: 1;}
+}
+
+@keyframes fadeIn {
+  from {opacity: 0;}
+  to {opacity:1 ;}
+}
+</style>
 
     <title>NBA Stats</title>
   </head>
@@ -111,18 +168,28 @@
       </thead>
       <tbody>
           <?php
+          $i = 0;
           foreach($_SESSION['players'] as $player):
           ?>
           <tr>
               <td><?php echo $player['position'] ?></td>
-              <td><?php echo $player['name'] ?></td>
+              <td><div class="popup" onclick=<?php echo "addPlayer({$i})"; ?>>
+              <?php echo $player['name'] ?>
+              <span class="popuptext" id=<?php echo "playerPopup{$i}" ?>><a href=<?php echo "?command=addPlayer&id={$player['id']}"; ?>>Add to My Team</a></span>
+              </div></td>
               <td><?php echo $player['team'] ?></td>
               <td><?php echo $player['fp']?></td>
           </tr>
-          <?php endforeach ?>
+          <?php $i++; endforeach ?>
       </tbody>
     </table>
     <a href="?command=filterRaw">View Raw</a>
   </div>
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script>        
+      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/bQdsTh/da6pkI1MST/rWKFNjaCP5gBSY4sEBT38Q/9RBh9AH40zEOg7Hlq2THRZ" crossorigin="anonymous"></script> 
+      <script>
+      function addPlayer(i) {
+        var popup = document.getElementById("playerPopup" + i);
+        popup.classList.toggle("show");
+      }
+      </script>       
 </body>

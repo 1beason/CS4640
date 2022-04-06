@@ -24,6 +24,17 @@ class Database {
          }
 
          try {
+             $this->query("SELECT * FROM userTeams LIMIT 1");
+         } catch (Exception $e) {
+                $this->query("CREATE TABLE userTeams (
+                    id int not null auto_increment,
+                    username text not null,
+                    playerId int not null,
+                    primary key (id)
+                )");
+         }
+
+         try {
             $this->query("SELECT * FROM players LIMIT 1");
          } catch (Exception $e) {
             $this->query("CREATE TABLE players (
