@@ -42,7 +42,7 @@
           </div>
           <div class="col-mb-4">
             <div class="card sm-4">
-              <a href="?command=teams">
+              <a href="?command=leaderboard">
               <img src="https://www.nba.com/assets/logos/teams/primary/web/GSW.svg" class="card-img-top" alt="Golden State Warrirors Logo" height="290">
               </a>
               <div class="card-body">
