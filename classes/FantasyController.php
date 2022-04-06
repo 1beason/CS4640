@@ -29,6 +29,9 @@ class FantasyController {
             case "leaderboard":
                 $this->leaderboard();
                 break;
+            case "players":
+                $this -> players();
+                break;
             default:
                 $this->home();
                 break;
@@ -44,15 +47,33 @@ class FantasyController {
         $this->prevCommand = "fantasy";
         include('templates/fantasy.php');
     }
+    public function players() {
+        $this->prevCommand = "players";
+        include('templates/players.php');
+    }
 
     public function leaderboard() {
         $this->prevCommand = "leaderboard";
-        $data1 = $this->db->query("select name from teams");
-        if ($data === false) {
+        $data1 = $this->db->query("select * from teams where conference = 'Eastern' order by percent desc;");
+        if ($data1 === false) {
             $error_msg = "Error checking for teams";
-        } else if (!empty($data)) {
-            $team_data = $data;
+        } else if (!empty($data1)) {
+            $east_data = $data1;
         }
+        else{
+            $east_data = array();
+        }
+        $data2 = $this->db->query("select * from teams where conference = 'Western' order by gb;");
+        if ($data2 === false) {
+            $error_msg = "Error checking for teams";
+        } else if (!empty($data2)) {
+            $west_data = $data2;
+        }
+        else{
+            $west_data = array();
+        }
+
+
 
         include('templates/leaderboard.php');
     }

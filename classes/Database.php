@@ -55,6 +55,19 @@ class Database {
                 city text not null,
                 conference text not null,
                 GB decimal(10,2) not null,
+                wins int not null,
+                losses int not null,
+                percent decimal (10, 3) not null,
+                division text not null,
+                homeWins int not null,
+                homeLosses int not null, 
+                awayWins int not null,
+                awayLosses int not null,
+                confWins int not null,
+                confLosses int not null,
+                divWins int not null,
+                divLosses int not null,
+                streak text not null,
                 primary key (id)
             )");
             $this->query("CREATE TABLE last_update (
@@ -111,15 +124,15 @@ class Database {
             // get the position
             $position = $player["Position"];
             // get the ppg
-            $ppg = $player["Points"] / $games;
+            $ppg = $player["Points"] / 72;
             // get the apg
-            $apg = $player["Assists"] / $games;
+            $apg = $player["Assists"] / 72;
             // get the rpg
-            $rpg = $player["Rebounds"] / $games;
+            $rpg = $player["Rebounds"] / 72;
             // get the bpg
-            $bpg = $player["BlockedShots"] / $games;
+            $bpg = $player["BlockedShots"] / 72;
             // get the spg
-            $spg = $player["Steals"] / $games;
+            $spg = $player["Steals"] / 72;
             // get the fantasy points
             $fp = $player["FantasyPoints"];
 
@@ -143,15 +156,15 @@ class Database {
             // get the position
             $position = $player["Position"];
             // get the ppg
-            $ppg = $player["Points"] / $games;
+            $ppg = $player["Points"] / 72;
             // get the apg
-            $apg = $player["Assists"] / $games;
+            $apg = $player["Assists"] / 72;
             // get the rpg
-            $rpg = $player["Rebounds"] / $games;
+            $rpg = $player["Rebounds"] / 72;
             // get the bpg
-            $bpg = $player["BlockedShots"] / $games;
+            $bpg = $player["BlockedShots"] / 72;
             // get the spg
-            $spg = $player["Steals"] / $games;
+            $spg = $player["Steals"] / 72;
             // get the fantasy points
             $fp = $player["FantasyPoints"];
 
@@ -176,9 +189,25 @@ class Database {
             $conference = $team["Conference"];
             // get the gb
             $gb = $team["GamesBack"];
+            $wins = $team["Wins"];
+            $losses = $team["Losses"];
+            $percent = $team["Percentage"];
+            $division = $team["Division"];
+            $homeWins = $team["HomeWins"];
+            $homeLosses = $team["HomeLosses"];
+            $awayWins = $team["AwayWins"];
+            $awayLosses = $team["AwayLosses"];
+
+            $streak = $team["StreakDescription"];
+            $confWins = $team["ConferenceWins"];
+            $confLosses = $team["ConferenceLosses"];
+            $divWins = $team["DivisionWins"];
+            $divLosses = $team["DivisionLosses"];
+
 
             // insert the team into the database
-            $this->query("INSERT INTO teams (id, name, city, conference, GB) VALUES (?, ?, ?, ?, ?)", "isssd", $id, $name, $city, $conference, $gb);
+            $this->query("INSERT INTO teams (id, name, city, conference, GB, wins, losses, percent, division, homeWins, homeLosses, awayWins, awayLosses, streak, confWins, confLosses, divWins, divLosses) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+            "isssdiidsiiiisiiii", $id, $name, $city, $conference, $gb, $wins, $losses, $percent, $division, $homeWins, $homeLosses, $awayWins, $awayLosses, $streak, $confWins, $confLosses, $divWins, $divLosses);
         }
     }
 
@@ -198,9 +227,25 @@ class Database {
             $conference = $team["Conference"];
             // get the gb
             $gb = $team["GamesBack"];
+            $wins = $team["Wins"];
+            $losses = $team["Losses"];
+            $percent = $team["Percentage"];
+            $division = $team["Division"];
+            $homeWins = $team["HomeWins"];
+            $homeLosses = $team["HomeLosses"];
+            $awayWins = $team["AwayWins"];
+            $awayLosses = $team["AwayLosses"];
+            $streak = $team["StreakDescription"];
+            $confWins = $team["ConferenceWins"];
+            $confLosses = $team["ConferenceLosses"];
+            $divWins = $team["DivisionWins"];
+            $divLosses = $team["DivisionLosses"];
+
+            
 
             // insert the team into the database
-            $this->query("REPLACE INTO teams (id, name, city, conference, GB) VALUES (?, ?, ?, ?, ?)", "isssd", $id, $name, $city, $conference, $gb);
+            $this->query("REPLACE INTO teams (id, name, city, conference, GB, wins, losses, percent, division, homeWins, homeLosses, awayWins, awayLosses, streak, confWins, confLosses, divWins, divLosses) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+            "isssdiidsiiiisiiii", $id, $name, $city, $conference, $gb, $wins, $losses, $percent, $division, $homeWins, $homeLosses, $awayWins, $awayLosses, $streak, $confWins, $confLosses, $divWins, $divLosses);
         }
     }
 
