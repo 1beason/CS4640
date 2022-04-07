@@ -166,7 +166,7 @@ class FantasyController {
         }
         $id = $_GET['id'];
 
-        $exists = $this->db->query("select * from userTeams where username = ? and playerd = ?;", "si", $_SESSION['username'], $id);
+        $exists = $this->db->query("select * from userTeams where username = ? and playerId = ?;", "si", $_SESSION['username'], $id);
         if (empty($exists)) {
             $insert = $this->db->query("insert into userTeams (username, playerId) values (?, ?);", "si", $_SESSION['username'], $id);
             if ($insert === false) {
