@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="author" content="Brooks Eason and Matthew Condecido">
+        <meta name="description" content="CS4640 Wordle Game implemented in Javascript">
+
+        <title>CS4640 Javascript Wordle</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
+
+        <script type="text/javascript">
+            /* global variables */
+            var word;
+            var prior_guesses = [];
+            var avg_guesses = 0;
+            var total_guesses = 0;
+            var total_games = 0;
+            var total_wins = 0;
+            var win_streak = 0;
+            var won = false;
+            var in_progress = false;
+
+            /* generate random word from the wordleword.js file on click of the new game button */
+            function newGame() {
+                
+                // if the game was in progress
+                if (in_progress) {
+                    // if they didn't win, clear the win streak
+                    if (!won) {
+                        win_streak = 0;
+                    }
+
+                    // update avg guesses per game
+                    avg_guesses = total_guesses / total_games;
+
+                    // clear guess text box
+                    document.getElementById("guess").innerHTML = "";
+
+                    // clear out prior guesses
+                    prior_guesses = [];
+                    document.getElementById("prior_guesses").innerHTML = "";
+                }
+
+                word = wordleword.getRandomWord();
+
+                // enable the guess box
+                document.getElementById("guess").disabled = false;
+                total_games++;
+            }
+
+
+            /* check if the guess is correct */
+            function guessWord(guess) {
+                total_guesses++;
+                var guess = guess.toLowerCase();
+                prior_guesses.push(guess);
+
+                if (guess == word) {
+                    won = true;
+                    win_streak++;
+                    total_wins++;
+                    document.getElementById("guess").disabled = true;
+                    document.getElementById("prior_guesses").innerHTML = "";
+                } else {
+                    in_progress = true;
+                    document.getElementById("guess").innerHTML = "";
+                    document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
+                }
+
+                var num_exactly_right = 0;
+                var num_wrong_place = 0;
+                var num_in_word = 0;
+                var guess_length = guess.length;
+                var word_length = word.length;
+                var letters = new Set();
+                var length = guess_length == word_length ? "Correct Length" : 
+                    guess_length < word_length ? "Too Short" : "Too Long";
+
+                if(guess_length <= word_length) {
+                    for(i = 0; i < guess_length; i++) {
+                        if(guess[i] == word[i]) {
+                            num_exactly_right++;
+                            letters.add(guess[i]);
+                        }
+                        for(j = 0; j < word_length; j++) {
+                            if(guess[i] == word[j] && i != j) {
+                                num_wrong_place++;
+                                letters.add(guess[i]);
+                            }
+                        }
+                    }
+                } else {
+                    for (i = 0; i++; i < word_length) {
+                        if(guess[i] == word[i]) {
+                            num_exactly_right++;
+                            letters.add(guess[i]);
+                        }
+                        for(j = 0; j < guess_length; j++) {
+                            if(guess[j] == word[i] && i != j) {
+                                num_wrong_place++;
+                                letters.add(guess[i]);
+                            }
+                        }
+                    }
+                }
+
+                num_in_word = letters.size;
+                
+            }
+
+            /* save the game to the local storage */
+            function save() {
+                /* save variables into game object */
+                var game = {
+                    word: word,
+                    prior_guesses: prior_guesses,
+                    avg_guesses: avg_guesses,
+                    total_guesses: total_guesses,
+                    total_games: total_games,
+                    total_wins: total_wins,
+                    win_streak: win_streak,
+                    won: won,
+                    in_progress: in_progress
+                };
+                localStorage.setItem("game", JSON.stringify(game));
+            }
+
+            /* load the game from the local storage if it exists */
+            function load() {
+                var game = JSON.parse(localStorage.getItem("game"));
+                if (game) {
+                    word = game.word;
+                    prior_guesses = game.prior_guesses;
+                    avg_guesses = game.avg_guesses;
+                    total_guesses = game.total_guesses;
+                    total_games = game.total_games;
+                    total_wins = game.total_wins;
+                    win_streak = game.win_streak;
+                    won = game.won;
+                    in_progress = game.in_progress;
+
+                    // set inner html of the page
+                    document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
+                    document.getElementById("avg_guesses").innerHTML = avg_guesses;
+                    document.getElementById("total_guesses").innerHTML = total_guesses;
+                    document.getElementById("total_games").innerHTML = total_games;
+                    document.getElementById("total_wins").innerHTML = total_wins;
+                    document.getElementById("win_streak").innerHTML = win_streak;
+                    
+                }
+            }
+
+            /* clear the local storage and info from DOM */
+            function clear() {
+                localStorage.clear();
+                document.getElementById("total_games").innerHTML = "";
+                document.getElementById("total_wins").innerHTML = "";
+                document.getElementById("avg_guesses").innerHTML = "";
+                document.getElementById("win_streak").innerHTML = "";
+                document.getElementById("prior_guesses").innerHTML = "";
+                document.getElementById("total_guesses").innerHTML = "";
+            }
+
+
+            /* add event listeners to the buttons */
+            function addEventListeners() {
+                document.getElementById("new_game").addEventListener("click", newGame);
+                document.getElementById("guess").addEventListener("keyup", function(event) {
+                    if (event.keyCode === 13) { // enter button
+                        event.preventDefault();
+                        document.getElementById("guess").disabled = true;
+                        guessWord(document.getElementById("guess").value);
+                    }
+                });
+                document.getElementById("guessButton").addEventListener("click", function() {
+                    document.getElementById("guess").disabled = true;
+                    guessWord(document.getElementById("guess").value);
+                });
+                document.getElementById("save").addEventListener("click", save);
+                document.getElementById("load").addEventListener("click", load);
+                document.getElementById("clear").addEventListener("click", clear);
+            }
+        </script>
+    </head>
+    <body onunload="save();" onload="load(); addEventListeners();">
+        <script src="https://cs4640.cs.virginia.edu/homework/wordlewords.js"></script>
+    </body>
+</html>
