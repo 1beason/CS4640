@@ -52,6 +52,13 @@
 
             /* check if the guess is correct */
             function guessWord(guess) {
+
+                // if the guess contains numbers or symbols, don't allow it
+                if (guess.match(/[^a-zA-Z]/)) {
+                    alert("Please enter a word without numbers or symbols.");
+                    return;
+                }
+                
                 total_guesses++;
                 var guess = guess.toLowerCase();
                 prior_guesses.push(guess);
