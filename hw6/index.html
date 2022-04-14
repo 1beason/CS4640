@@ -20,6 +20,7 @@
             var win_streak = 0;
             var won = false;
             var in_progress = false;
+            var guess_stats = {};
 
             /* generate random word from the wordleword.js file on click of the new game button */
             function newGame() {
@@ -75,24 +76,24 @@
                     document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
                 }
 
-                var num_exactly_right = 0;
-                var num_wrong_place = 0;
-                var num_in_word = 0;
+                guess_stats.num_exactly_right = 0;
+                guess_stats.num_wrong_place = 0;
+                guess_stats.num_in_word = 0;
                 var guess_length = guess.length;
                 var word_length = word.length;
-                var letters = new Set();
-                var length = guess_length == word_length ? "Correct Length" : 
+                guess_stats.letters = new Set();
+                guess_stats.length = guess_length == word_length ? "Correct Length" : 
                     guess_length < word_length ? "Too Short" : "Too Long";
 
                 if(guess_length <= word_length) {
                     for(i = 0; i < guess_length; i++) {
                         if(guess[i] == word[i]) {
-                            num_exactly_right++;
+                            guess_stats.num_exactly_right++;
                             letters.add(guess[i]);
                         }
                         for(j = 0; j < word_length; j++) {
                             if(guess[i] == word[j] && i != j) {
-                                num_wrong_place++;
+                                guess_stats.num_wrong_place++;
                                 letters.add(guess[i]);
                             }
                         }
@@ -100,19 +101,19 @@
                 } else {
                     for (i = 0; i++; i < word_length) {
                         if(guess[i] == word[i]) {
-                            num_exactly_right++;
+                            guess_stats.num_exactly_right++;
                             letters.add(guess[i]);
                         }
                         for(j = 0; j < guess_length; j++) {
                             if(guess[j] == word[i] && i != j) {
-                                num_wrong_place++;
+                                guess_stats.num_wrong_place++;
                                 letters.add(guess[i]);
                             }
                         }
                     }
                 }
 
-                num_in_word = letters.size;
+                guess_stats.num_in_word = letters.size;
                 
             }
 
@@ -128,7 +129,8 @@
                     total_wins: total_wins,
                     win_streak: win_streak,
                     won: won,
-                    in_progress: in_progress
+                    in_progress: in_progress,
+                    guess_stats: guess_stats
                 };
                 localStorage.setItem("game", JSON.stringify(game));
             }
@@ -146,6 +148,7 @@
                     win_streak = game.win_streak;
                     won = game.won;
                     in_progress = game.in_progress;
+                    guess_stats = game.guess_stats;
 
                     // set inner html of the page
                     document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
