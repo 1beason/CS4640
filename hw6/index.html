@@ -23,7 +23,7 @@
             var guess_stats = {};
 
             /* generate random word from the wordleword.js file on click of the new game button */
-            function newGame() {
+            function newGame(newWord) {
                 
                 // if the game was in progress
                 if (in_progress) {
@@ -43,7 +43,7 @@
                     document.getElementById("prior_guesses").innerHTML = "";
                 }
 
-                word = wordleword.getRandomWord();
+                word = newWord;
 
                 // enable the guess box
                 document.getElementById("guess").disabled = false;
@@ -52,7 +52,7 @@
 
 
             /* check if the guess is correct */
-            function guessWord(guess) {
+            function guessWord() {
 
                 // if the guess contains numbers or symbols, don't allow it
                 if (guess.match(/[^a-zA-Z]/)) {
@@ -60,6 +60,7 @@
                     return;
                 }
                 
+                var guess = document.getElementById("frm1").value;
                 total_guesses++;
                 var guess = guess.toLowerCase();
                 prior_guesses.push(guess);
@@ -158,6 +159,8 @@
                     document.getElementById("total_wins").innerHTML = total_wins;
                     document.getElementById("win_streak").innerHTML = win_streak;
                     
+                } else {
+                    getRandomWord(newGame);
                 }
             }
 
