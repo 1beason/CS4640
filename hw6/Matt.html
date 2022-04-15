@@ -24,13 +24,11 @@
 
             /* generate random word from the wordleword.js file on click of the new game button */
             function newGame(newWord) {
-                
+                word = newWord;
                 // if the game was in progress
                 if (in_progress) {
                     // if they didn't win, clear the win streak
-                    if (!won) {
-                        win_streak = 0;
-                    }
+                    win_streak = 0;
 
                     // update avg guesses per game
                     avg_guesses = total_guesses / total_games;
@@ -40,10 +38,8 @@
 
                     // clear out prior guesses
                     prior_guesses = [];
-                    document.getElementById("prior_guesses").innerHTML = "";
                 }
-
-                word = newWord;
+                
 
                 // enable the guess box
                 document.getElementById("guess").disabled = false;
@@ -53,48 +49,59 @@
 
             /* check if the guess is correct */
             function guessWord() {
-
-                // if the guess contains numbers or symbols, don't allow it
-                if (guess.match(/[^a-zA-Z]/)) {
+                alert(word);
+                var guess = document.getElementById("guess");
+                if (guess.value.match(/[^a-zA-Z]/) || guess.value.length == 0) {
                     alert("Please enter a word without numbers or symbols.");
                     return;
                 }
-                
-                var guess = document.getElementById("frm1").value;
+
+                var table = document.getElementById("guess_table");
+                var newRow = table.insertRow(table.rows.length);
+                var newCell = newRow.insertCell(0);
+                newCell.innerHTML = "<p>"+guess.value+"</p>";
+
+
+
+
+                // if the guess contains numbers or symbols, don't allow it
+               
+
+
                 total_guesses++;
-                var guess = guess.toLowerCase();
+                guess = guess.value.toLowerCase();
                 prior_guesses.push(guess);
+
 
                 if (guess == word) {
                     won = true;
                     win_streak++;
                     total_wins++;
                     document.getElementById("guess").disabled = true;
-                    document.getElementById("prior_guesses").innerHTML = "";
+                    alert("Congratulations! You Won!")
+
                 } else {
                     in_progress = true;
-                    document.getElementById("guess").innerHTML = "";
-                    document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
                 }
 
-                guess_stats.num_exactly_right = 0;
-                guess_stats.num_wrong_place = 0;
-                guess_stats.num_in_word = 0;
+                num_exactly_right = 0;
+                num_wrong_place = 0;
+                num_in_word = 0;
                 var guess_length = guess.length;
                 var word_length = word.length;
-                guess_stats.letters = new Set();
-                guess_stats.length = guess_length == word_length ? "Correct Length" : 
+                letters = new Set();
+                length = guess_length == word_length ? "Correct Length" : 
                     guess_length < word_length ? "Too Short" : "Too Long";
 
                 if(guess_length <= word_length) {
                     for(i = 0; i < guess_length; i++) {
                         if(guess[i] == word[i]) {
-                            guess_stats.num_exactly_right++;
+                            num_exactly_right++;
                             letters.add(guess[i]);
                         }
                         for(j = 0; j < word_length; j++) {
                             if(guess[i] == word[j] && i != j) {
-                                guess_stats.num_wrong_place++;
+                                num_wrong_place++;
                                 letters.add(guess[i]);
                             }
                         }
@@ -102,19 +109,28 @@
                 } else {
                     for (i = 0; i++; i < word_length) {
                         if(guess[i] == word[i]) {
-                            guess_stats.num_exactly_right++;
+                            num_exactly_right++;
                             letters.add(guess[i]);
                         }
                         for(j = 0; j < guess_length; j++) {
                             if(guess[j] == word[i] && i != j) {
-                                guess_stats.num_wrong_place++;
+                                num_wrong_place++;
                                 letters.add(guess[i]);
                             }
                         }
                     }
                 }
 
-                guess_stats.num_in_word = letters.size;
+                num_in_word = letters.size;
+                var newCell = newRow.insertCell(1);                
+                newCell.innerHTML = num_in_word;
+                var newCell = newRow.insertCell(2);                
+                newCell.innerHTML = num_exactly_right;
+                var newCell = newRow.insertCell(3);                
+                newCell.innerHTML = length;
+
+
+
                 
             }
 
@@ -136,6 +152,10 @@
                 localStorage.setItem("game", JSON.stringify(game));
             }
 
+            function generateNewWord(){
+                getRandomWord(newGame);
+            }
+
             /* load the game from the local storage if it exists */
             function load() {
                 var game = JSON.parse(localStorage.getItem("game"));
@@ -152,13 +172,12 @@
                     guess_stats = game.guess_stats;
 
                     // set inner html of the page
-                    document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
                     document.getElementById("avg_guesses").innerHTML = avg_guesses;
                     document.getElementById("total_guesses").innerHTML = total_guesses;
                     document.getElementById("total_games").innerHTML = total_games;
                     document.getElementById("total_wins").innerHTML = total_wins;
                     document.getElementById("win_streak").innerHTML = win_streak;
-                    
+
                 } else {
                     getRandomWord(newGame);
                 }
@@ -178,7 +197,9 @@
 
             /* add event listeners to the buttons */
             function addEventListeners() {
-                document.getElementById("new_game").addEventListener("click", newGame);
+                document.getElementById("new_game").addEventListener("click", function() {
+                    generateNewWord(newGame);
+                });
                 document.getElementById("guess").addEventListener("keyup", function(event) {
                     if (event.keyCode === 13) { // enter button
                         event.preventDefault();
@@ -197,6 +218,39 @@
         </script>
     </head>
     <body onunload="save();" onload="load(); addEventListeners();">
-        <script src="https://cs4640.cs.virginia.edu/homework/wordlewords.js"></script>
+    <div class="container">
+        <div class="row">
+        <form name="guess-add">
+            <h1>Evil Wordle!</h1>
+            <label for="guess" class="form-label">Enter Your Guess Here: </label>
+            <div class="input-group">
+                <input type="text" class="form-control" autofocus id="guess" name="guess"/>
+                <input type="button" class="btn btn-primary" value="Submit" onclick="guessWord();"/>
+            </div>
+        </form>
+
+        </div>
+        <div class="row" style="margin-top: 20px;">    
+            <div class="col-12">
+                <p id="avg_guesses"></p>
+                <p id="total_guesses"></p>
+                <p id="total_games"></p>
+                <p id="total_wins"></p>
+                <p id="win_streak"></p>
+
+                <table id="guess_table" class="table table-striped">
+                    <tr class="table-dark">
+                        <th style="width: 25%;">Guess</th>
+                        <th style="width: 25%;"># of Characters in Word</th>
+                        <th style="width: 25%;"># of Characters in Correct Locations</th>
+                        <th style="width: 25%;">Length</th>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <button id="new_game">New Word</button>
+        <button onclick="clear();">Clear</button>
+    </div>
+    <script src="https://cs4640.cs.virginia.edu/homework/wordlewords.js"></script>
     </body>
 </html>
