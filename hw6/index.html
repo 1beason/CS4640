@@ -1,3 +1,5 @@
+<!-- Brooks' Page: https://cs4640.cs.virginia.edu/bwe3bx/hw6/-->
+<!-- Matthew's Page https://cs4640.cs.virginia.edu/msc3bnc/hw6/ -->
 <!DOCTYPE html>
 <html>
     <head>
@@ -9,6 +11,7 @@
         <title>CS4640 Javascript Wordle</title>
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous"> 
 
+        <style></style>
         <script type="text/javascript">
             /* global variables */
             var word;
@@ -18,105 +21,142 @@
             var total_games = 0;
             var total_wins = 0;
             var win_streak = 0;
-            var won = false;
             var in_progress = false;
-            var guess_stats = {};
 
             /* generate random word from the wordleword.js file on click of the new game button */
             function newGame(newWord) {
-                
+                word = newWord;
                 // if the game was in progress
                 if (in_progress) {
                     // if they didn't win, clear the win streak
-                    if (!won) {
-                        win_streak = 0;
-                    }
+                    document.getElementById("win_streak").innerHTML = 0;
 
                     // update avg guesses per game
-                    avg_guesses = total_guesses / total_games;
+                    document.getElementById("avg_guesses").innerHTML = 0;
 
+                    
                     // clear guess text box
                     document.getElementById("guess").innerHTML = "";
 
-                    // clear out prior guesses
-                    prior_guesses = [];
-                    document.getElementById("prior_guesses").innerHTML = "";
+                    // clear out prior  guesses
                 }
-
-                word = newWord;
+                
 
                 // enable the guess box
+
+                var table = document.getElementById("guess_table");
+                for(var i = 1; i < table.rows.length;){
+                    table.deleteRow(i);
+                }
+                prior_guesses = [];
                 document.getElementById("guess").disabled = false;
+                guess.value = "";
                 total_games++;
+                document.getElementById("total_games").innerHTML = total_games;
             }
 
 
             /* check if the guess is correct */
             function guessWord() {
-
-                // if the guess contains numbers or symbols, don't allow it
-                if (guess.match(/[^a-zA-Z]/)) {
+                var guess = document.getElementById("guess");
+                if (guess.value.length == 0){
+                    return;
+                }
+                if (guess.value.match(/[^a-zA-Z]/)) {
                     alert("Please enter a word without numbers or symbols.");
                     return;
                 }
-                
-                var guess = document.getElementById("frm1").value;
+
+                var table = document.getElementById("guess_table");
+                var newRow = table.insertRow(table.rows.length);
+                var newCell = newRow.insertCell(0);
+                newCell.innerHTML = "<p>"+guess.value+"</p>";
+
+
+
+
+                // if the guess contains numbers or symbols, don't allow it
+               
                 total_guesses++;
-                var guess = guess.toLowerCase();
-                prior_guesses.push(guess);
+                var my_guess = guess.value.toLowerCase();
 
-                if (guess == word) {
-                    won = true;
-                    win_streak++;
-                    total_wins++;
-                    document.getElementById("guess").disabled = true;
-                    document.getElementById("prior_guesses").innerHTML = "";
-                } else {
-                    in_progress = true;
-                    document.getElementById("guess").innerHTML = "";
-                    document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
-                }
-
-                guess_stats.num_exactly_right = 0;
-                guess_stats.num_wrong_place = 0;
-                guess_stats.num_in_word = 0;
-                var guess_length = guess.length;
+                num_exactly_right = 0;
+                num_wrong_place = 0;
+                num_in_word = 0;
+                var guess_length = my_guess.length;
                 var word_length = word.length;
-                guess_stats.letters = new Set();
-                guess_stats.length = guess_length == word_length ? "Correct Length" : 
+                letters = new Set();
+                length = guess_length == word_length ? "Correct Length" : 
                     guess_length < word_length ? "Too Short" : "Too Long";
 
                 if(guess_length <= word_length) {
                     for(i = 0; i < guess_length; i++) {
-                        if(guess[i] == word[i]) {
-                            guess_stats.num_exactly_right++;
-                            letters.add(guess[i]);
+                        if(my_guess[i] == word[i]) {
+                            num_exactly_right++;
+                            letters.add(my_guess[i]);
                         }
                         for(j = 0; j < word_length; j++) {
-                            if(guess[i] == word[j] && i != j) {
-                                guess_stats.num_wrong_place++;
-                                letters.add(guess[i]);
+                            if(my_guess[i] == word[j] && i != j) {
+                                num_wrong_place++;
+                                letters.add(my_guess[i]);
                             }
                         }
                     }
                 } else {
-                    for (i = 0; i++; i < word_length) {
-                        if(guess[i] == word[i]) {
-                            guess_stats.num_exactly_right++;
-                            letters.add(guess[i]);
+                    for (i = 0; i < word_length; i++) {
+                        if(my_guess[i] == word[i]) {
+                            num_exactly_right++;
+                            letters.add(my_guess[i]);
                         }
                         for(j = 0; j < guess_length; j++) {
-                            if(guess[j] == word[i] && i != j) {
-                                guess_stats.num_wrong_place++;
-                                letters.add(guess[i]);
+                            if(my_guess[j] == word[i] && i != j) {
+                                num_wrong_place++;
+                                letters.add(my_guess[i]);
                             }
                         }
                     }
                 }
 
-                guess_stats.num_in_word = letters.size;
-                
+                num_in_word = letters.size;
+                var newCell = newRow.insertCell(1);  
+                newCell.innerHTML = num_in_word;
+
+                var newCell = newRow.insertCell(2);     
+                newCell.innerHTML = num_exactly_right;
+
+                var newCell = newRow.insertCell(3);                
+                newCell.innerHTML = length;
+
+                avg_guesses = total_guesses / total_games;
+                document.getElementById("avg_guesses").innerHTML = avg_guesses;
+                let guess_obj = {
+                    guess : guess.value,
+                    num_in_word : num_in_word,
+                    num_exactly_right : num_exactly_right,
+                    length : length 
+                }
+                prior_guesses.push(guess_obj);
+                guess.value = "";
+                if (my_guess == word) {
+                    in_progress = false;
+                    win_streak++;
+                    total_wins++;
+                    document.getElementById("guess").disabled = true;
+                    document.getElementById("win_streak").innerHTML = win_streak;
+                    document.getElementById("total_wins").innerHTML = total_wins;
+                    alert('Congratulations! You guessed the correct word!\nClick the "New Game" button if you want to play again!');
+                    prior_guesses = [];
+                } else {
+                    in_progress = true;
+                }
             }
+
+
+
+
+
+
+
 
             /* save the game to the local storage */
             function save() {
@@ -129,11 +169,13 @@
                     total_games: total_games,
                     total_wins: total_wins,
                     win_streak: win_streak,
-                    won: won,
                     in_progress: in_progress,
-                    guess_stats: guess_stats
                 };
                 localStorage.setItem("game", JSON.stringify(game));
+            }
+
+            function generateNewWord(){
+                getRandomWord(newGame);
             }
 
             /* load the game from the local storage if it exists */
@@ -147,56 +189,99 @@
                     total_games = game.total_games;
                     total_wins = game.total_wins;
                     win_streak = game.win_streak;
-                    won = game.won;
                     in_progress = game.in_progress;
-                    guess_stats = game.guess_stats;
 
                     // set inner html of the page
-                    document.getElementById("prior_guesses").innerHTML = prior_guesses.join(", ");
                     document.getElementById("avg_guesses").innerHTML = avg_guesses;
-                    document.getElementById("total_guesses").innerHTML = total_guesses;
                     document.getElementById("total_games").innerHTML = total_games;
                     document.getElementById("total_wins").innerHTML = total_wins;
                     document.getElementById("win_streak").innerHTML = win_streak;
-                    
-                } else {
-                    getRandomWord(newGame);
-                }
+                    var table = document.getElementById("guess_table");
+                    for (i = 0; i < prior_guesses.length; i++){
+                        var newRow = table.insertRow(table.rows.length);
+                        var newCell = newRow.insertCell(0);
+                        newCell.innerHTML = "<p>"+prior_guesses[i].guess+"</p>";
+                        var newCell = newRow.insertCell(1);
+                        newCell.innerHTML = prior_guesses[i].num_in_word;
+                        var newCell = newRow.insertCell(2);
+                        newCell.innerHTML = prior_guesses[i].num_exactly_right;
+                        var newCell = newRow.insertCell(3);
+                        newCell.innerHTML = prior_guesses[i].length;
+                    }
             }
+        }
 
             /* clear the local storage and info from DOM */
             function clear() {
-                localStorage.clear();
-                document.getElementById("total_games").innerHTML = "";
-                document.getElementById("total_wins").innerHTML = "";
-                document.getElementById("avg_guesses").innerHTML = "";
-                document.getElementById("win_streak").innerHTML = "";
-                document.getElementById("prior_guesses").innerHTML = "";
-                document.getElementById("total_guesses").innerHTML = "";
+                localStorage.removeItem("game");
+                document.getElementById("total_games").innerHTML = 0;
+                document.getElementById("total_wins").innerHTML = 0;
+                document.getElementById("avg_guesses").innerHTML = 0;
+                document.getElementById("win_streak").innerHTML = 0;
+                prior_guesses = [];
+                avg_guesses = 0;
+                total_guesses = 0;
+                total_games = 0;
+                total_wins = 0;
+                win_streak = 0;
+                in_progress = false;
+                var table = document.getElementById("guess_table");
+                for(var i = 1; i < table.rows.length;){
+                    table.deleteRow(i);
+                }
+                word = generateNewWord(newGame);
             }
-
 
             /* add event listeners to the buttons */
             function addEventListeners() {
-                document.getElementById("new_game").addEventListener("click", newGame);
-                document.getElementById("guess").addEventListener("keyup", function(event) {
-                    if (event.keyCode === 13) { // enter button
-                        event.preventDefault();
-                        document.getElementById("guess").disabled = true;
-                        guessWord(document.getElementById("guess").value);
-                    }
+                document.getElementById("new_game").addEventListener("click", function() {
+                    generateNewWord(newGame);
                 });
-                document.getElementById("guessButton").addEventListener("click", function() {
-                    document.getElementById("guess").disabled = true;
-                    guessWord(document.getElementById("guess").value);
-                });
-                document.getElementById("save").addEventListener("click", save);
-                document.getElementById("load").addEventListener("click", load);
+                document.getElementById("guessButton").addEventListener("click", guessWord);
                 document.getElementById("clear").addEventListener("click", clear);
             }
         </script>
     </head>
     <body onunload="save();" onload="load(); addEventListeners();">
-        <script src="https://cs4640.cs.virginia.edu/homework/wordlewords.js"></script>
+    <div class="container">
+        <div class="row">
+        <form name="guess-add" onsubmit="guessWord();">
+            <h1>Evil Wordle!</h1>
+            <p><b>Instructions:</b> Welcome to Evil Wordle! The game is simple. Enter 
+            a word to see if your guess matches the word our website's algorithm randomly selected.
+            We keep track of a number of stats regarding on how you play, so make sure you keep that in mind and perform well! 
+            If you want to start a brand new game, click the "New Game" button underneath the table below. 
+            To clear your in-game statistics, click the "Clear" button underneath the table below.</p>
+            <label for="guess" class="form-label"><b>Enter Your Guess Here: </b></label>
+            <div class="input-group">
+                <input type="text" class="form-control" autofocus id="guess" name="guess"/>
+                <input type="button" class="btn btn-primary" value="Submit" id="guessButton"/>
+            </div>
+        </form>
+
+        </div>
+        <div class="row" style="margin-top: 20px;">    
+            <div class="col-12">
+                <p><b>Average Guesses:</b> <span id="avg_guesses"></span></p>
+                <p><b>Total Games: </b><span id="total_games"></span></p>
+                <p><b>Total Wins: </b> <span id="total_wins"></span></p>
+                <p><b>Win Streak: </b> <span id="win_streak"></span></p>
+
+                <table id="guess_table" class="table table-striped">
+                    <tr class="table-dark">
+                        <th style="width: 25%;">Guess</th>
+                        <th style="width: 25%;"># of Characters in Word</th>
+                        <th style="width: 25%;"># of Characters in Correct Locations</th>
+                        <th style="width: 25%;">Length</th>
+                    </tr>
+                </table>
+            </div>
+            <div style="text-align:center">
+            <button id="new_game" style="width:200px;">New Game</button>
+            <button id="clear" style="width:200px">Clear</button>
+        </div>
+        </div>
+    </div>
+    <script src="https://cs4640.cs.virginia.edu/homework/wordlewords.js"></script>
     </body>
 </html>
