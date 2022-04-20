@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lights Out</title>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="author" content="Brooks Eason and Matthew Condecido" />
+
+        <style>
+            .on {
+                background-color: #95cdf1;
+            }
+
+            .off {
+                background-color: #0a506b;
+            }
+
+            .grid-container {
+                display: grid;
+                grid-template-columns: auto auto auto;
+                padding: 10px;
+            }
+
+            .grid-item {
+                border: 1px solid rgba(0, 0, 0, 0.8);
+                padding: 20px;
+                font-size: 30px;
+                text-align: center;
+            }
+        </style>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.js"
+	        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	        crossorigin="anonymous"></script>
+        
+        <script type="text/javascript">
+            var height = 3;
+            var width = 3;
+            // query the setup.php file on click of submit button
+            function setup() {
+                height = $("#height").val();
+                width = $("#width").val();
+                $.get("?action=setup&height=" + $("#height").val() + "&width=" + $("#width").val(), function(result) {
+                    buildTable(result);
+                });
+            }
+
+            // utility function to determine if a cell is diagonal from clicked
+            function isDiagonal(x, y, i, j) {
+                return !(x == i || y == j);
+            }
+
+            // function to toggle the lights
+            function toggle(x, y) {
+                console.log($("#" + x.toString() + y.toString()).length);
+                console.log($("#21").length);
+                // determine which squares to toggle
+                
+                
+                for (var i = x - 1; i <= x + 1; i++) {
+                    for (var j = y - 1; j <= y + 1; j++) {
+                        //console.log("#" + i + ", " + j);
+                        if ((i >= 0 && i < height && j >= 0 && j < width) && ($("#" + i + j).length != 0) && (!isDiagonal(x, y, i, j))) {
+                            console.log("sup");
+
+                            if ($("#" + i + j).hasClass("on")) {
+                                $("#" + i + j).removeClass("on");
+                                $("#" + i + j).addClass("off");
+                            } else {
+                                $("#" + i + j).removeClass("off");
+                                $("#" + i + j).addClass("on");
+                            }
+                            console.log(x + ", " + y);
+                        }
+                    }
+                }
+
+                checkWin();
+                
+            }
+
+
+            // function to build the grid given the response from the server
+            function buildTable(json) {
+                var response = JSON.parse(json);
+                var ht = respone.height;
+                var wd = response.width;
+                var on = response.on;
+
+                var grid = "<div class='grid-container'>";
+                for (var i = 0; i < ht; i++) {
+                    for (var j = 0; j < wd; j++) {
+                        if (on.contains(i + j)) {
+                            grid += "<div class='grid-item on' id='" + i + j + "'></div>";
+                        } else {
+                            grid += "<div class='grid-item off' id='" + i + j + "'></div>";
+                        }
+                    }
+                }
+
+                $("#grid").html(grid);
+            }
+
+            // function to check if the game is won
+            function checkWin() {
+                var on = [];
+                for (var i = 0; i < height; i++) {
+                    for (var j = 0; j < width; j++) {
+                        if ($("#" + i + j).hasClass("off")) {
+                            on.push(i + j);
+                        }
+                    }
+                }
+
+                if (on.length == (height * width)) {
+                    $("#message").html("<h1>You Win!</h1>");
+                }
+            }
+
+            // bind the click event to the submit button
+            $(document).ready(function() {
+                $("#submit").click(setup);
+            });
+
+            // bind the click event to the squares
+            $(document).ready(function() {
+                $(".grid-item").click(function() {
+                    var id = $(this).attr('id');
+                    console.log(id);
+                    var x = id[0];
+                    var y = id[1];
+                    toggle(x, y);
+                });
+            })
+        </script>
+    </head>
+    <body>
+        <h1>Lights Out</h1>
+        <h3 id="message"></h3>
+        <form>
+            <label for="height">Height:</label>
+            <input type="text" id="height" name="height" value="3" />
+            <label for="width">Width:</label>
+            <input type="text" id="width" name="width" value="3" />
+            <input type="submit" id="submit" value="Submit" />
+        </form>
+        <div class="grid-container" id='grid'>
+        </div>
+    </body>
+        
+
+</html>
