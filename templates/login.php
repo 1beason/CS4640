@@ -24,7 +24,7 @@
 	        crossorigin="anonymous"></script>
 
     <script type="text/javascript">
-    $(document).ready(function() {
+    $(document).ready(() => {
         if ($('#name').html() == "" || $('#username').html() == "" || $('#password').html() == "") {
             $('#submit').prop('disabled', true);
         }
