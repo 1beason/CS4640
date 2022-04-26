@@ -40,7 +40,7 @@
             function setup() {
                 height = $("#height").val();
                 width = $("#width").val();
-                $.get("?action=setup&height=" + $("#height").val() + "&width=" + $("#width").val(), function(result) {
+                $.get("setup.php?height=" + $("#height").val() + "&width=" + $("#width").val(), function(result) {
                     buildTable(result);
                 });
                 
@@ -80,33 +80,19 @@
 
             // function to build the grid given the response from the server
             function buildTable(json) {
-                
-                var response = JSON.parse(json);
-                var ht = respone.height;
-                var wd = response.width;
-                var on = response.on;
-
-
                 var grid = "<div class='grid-container'>";
-                for (var i = 0; i < ht; i++) {
-                    for (var j = 0; j < wd; j++) {
-                        console.log(String(i) + String(j));
-                        if (on.includes(String(i) + String(j))) {
-                            console.log('on');
-                            grid += "<div class='grid-item on' id='" + i + j + "' onclick=toggle(" + i + "," + j + ")></div>";
-                        } else {
-                            console.log('off');
-                            grid += "<div class='grid-item off' id='" + i + j + "' onclick=toggle(" + i  + "," + j + ")></div>";
+                for (var i = 0; i < height; i++) {
+                    for (var j = 0; j < width; j++) {
+                        grid += "<div class='grid-item off' id='" + i + j + "' onclick=toggle(" + i  + "," + j + ")></div>";
                         }
                     }
-                }
 
                 $("#grid").html(grid);
             }
 
             // function to check if the game is won
             function checkWin() {
-                var on = [];
+                
                 for (var i = 0; i < height; i++) {
                     for (var j = 0; j < width; j++) {
                         if ($("#" + i + j).hasClass("off")) {
@@ -122,7 +108,7 @@
 
             // bind the click event to the submit button
             $(document).ready(function() {
-                $("#submit").click(buildTable);
+                $("#submit").click(setup);
                 $("#test").click(buildTable);
             });
 
@@ -132,7 +118,7 @@
         <h1>Lights Out</h1>
         <h3 id="message"></h3>
         <button id='test'>Test</button>
-        <form>
+        <form> 
             <label for="height">Height:</label>
             <input type="text" id="height" name="height" value="3" />
             <label for="width">Width:</label>

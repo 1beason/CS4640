@@ -21,30 +21,8 @@
               <li class="nav-item">
                 <a class="nav-link" href="?command=fantasy">Fantasy Dashboard</a>
               </li>
-              <li class="nav-item dropdown">
-                <a
-                  class="nav-link dropdown-toggle"
-                  href="#"
-                  id="dropdown09"
-                  data-bs-toggle="dropdown"
-                  aria-expanded="false"
-                >
-                  Leaderboards
-                </a>
-                <ul class="dropdown-menu" aria-labelledby="dropdown09">
-                  <li>
-                    <a class="dropdown-item" href="?command=players">Players</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="?command=leaderboard">Teams</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="?command=games">Games</a>
-                  </li>
-                  <li>
-                    <a class="dropdown-item" href="?command=about">About</a>
-                  </li>
-                </ul>
+              <li class="nav-item">
+                <a class="nav-link" href="?command=leaderboard">Team Leaderboard</a>
               </li>
             </ul>
             <ul class="navbar-nav d-flex flex-row me-1">

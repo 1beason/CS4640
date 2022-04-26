@@ -16,17 +16,39 @@
 
     <title>NBA Stats</title>
   </head>
+  <script src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+  <script type="text/javascript">
+    $(document).ready(function(){
+      $("#newPlayer").click(function(event){
+        $.getJSON('https://data.nba.net/data/10s/prod/v1/2021/players.json', function(player) {
+          var newPlayer = player.league.standard[Math.floor(Math.random() * player.league.standard.length)];
+          var url = "https://ak-static.cms.nba.com/wp-content/uploads/headshots/nba/latest/260x190/" + newPlayer.personId + ".png";
+          $('#display').html('<img src=' + url + '><h3 style="text-align: center;" class="card-title" >' + newPlayer.firstName + ' ' + newPlayer.lastName + '<br/>Welcomes You to NBA Stats!</h3>');
+          $
+
+
+        });
+      });
+    });
+  </script>
+
+
   <body>
     <?php
       include("nav.php");
     ?>
-      <div class="p-5 mb-4 rounded-3" id="jumbotronHome">
-        <div class="container-fluid py-5">
+
+      <div class="p-5 mb-3 rounded-3" id="jumbotronHome">
+        <div class="container-fluid py-5" style="margin-bottom: 10px">
           <img src="https://cdn.nba.com/manage/2020/10/NBA20Secondary20Logo-784x462.jpg" alt="NBA Logo" class="center" height="10">
           <h2 class="display-5 fw-bold" style="text-align: center;">Your Home for All Things NBA</h2>
+          <div class="card sm-4" style="	margin: 0 auto; display: grid; place-items: center; margin-top: 10px; width: 18rem;" id="display"></div>
+          <h3 id="newPlayer" class=" fw-bold" style="text-align: center; ">Click to be greeted by a player.</h3>
         </div>
       </div>
-      <div class="row">
+        <div class="row">
           <div class="col-mb-4">
             <div class="card sm-4">
               <a href="?command=players">
