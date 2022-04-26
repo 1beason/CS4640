@@ -157,7 +157,8 @@ class FantasyController {
                     header("Location: ?command={$this->prevCommand}");
                 }
             }
-        }        include('templates/login.php');
+        }        
+        include('templates/login.php');
     }
 
     public function addPlayer() {
@@ -193,7 +194,7 @@ class FantasyController {
             }
         }
         else{
-            $user_data = array();
+            $players = array();
         }
         include('templates/profile.php');
     }

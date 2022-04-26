@@ -35,6 +35,7 @@
       </thead>
       <tbody>
           <?php
+          if(count($players) !== 0) {
           foreach($players as $player):
             ?>
             <tr>
@@ -43,7 +44,9 @@
               <td><?php echo $player[0]['team'] ?></td>
               <td><?php echo $player[0]['fp'] ?></td>
           </tr>
-          <?php endforeach ?>
+          <?php endforeach; } else {
+            echo "<h2 class='text-center'><b>You haven't chosen any players yet</h2>";
+          }?>
         </tbody>
     </table>
     </div>
