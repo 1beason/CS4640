@@ -11,6 +11,9 @@
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.3.0/font/bootstrap-icons.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.js"
+	        integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+	        crossorigin="anonymous"></script>
     <link href="styles/main.css" rel="stylesheet">
     <style>
     /* Popup Styling Copied From https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_popup */
@@ -72,6 +75,44 @@
 </style>
 
     <title>NBA Stats</title>
+
+    <script type="text/javascript">
+      class Player {
+        constructor(name, position, team, fp) {
+          this.name = name;
+          this.position = position;
+          this.team = team;
+          this.fp = fp;
+        }
+      }
+
+      class Response {
+        constructor(players) {
+          this.players = players;
+        }
+      }
+      function getRawPlayers(t) {
+        var name = ($(t).attr("id"));
+          $.ajax({url:"?command=" + name +"Raw"}).then(function(response) {
+            // update the table
+            var players = response;
+            
+            for (var i = 0; i < players.length; i++) {
+              var player = players[i];
+              var row = $("<tr>");
+              row.append($("<td>").text(player.name));
+              row.append($("<td>").text(player.position));
+              row.append($("<td>").text(player.team));
+              row.append($("<td>").text(player.fp));
+              t.append(row);
+            }
+          });
+        }
+
+      $(document).ready(function () {
+        getRawPlayers($("#topScorers"));
+    });
+    </script>
   </head>
   <body>
   <?php
@@ -79,7 +120,7 @@
     ?>
       <h1 style="text-align: center;">This Week's Top Scoring Players</h1>
       <div class="container">
-        <table class="table table-hover table-striped">
+        <table class="table table-hover table-striped" id="topScorers">
           <thead class="thead-inverse">
             <tr>
               <th>Position</th>
@@ -89,19 +130,9 @@
             </tr>
         </thead>
         <tbody>
-            <?php
-            foreach($top_scorers as $player):
-            ?>
-            <tr>
-                <th scope="row"><?php echo $player['position'] ?></th>
-                <td><?php echo $player['name'] ?></td>
-                <td><?php echo $player['team'] ?></td>
-                <td><?php echo $player['fp']?></td>
-            </tr>
-            <?php endforeach ?>
         </tbody>
       </table>
-      <a href="?command=topScorersRaw">View Raw</a>
+      <a onclick="getRawPlayers(topScorers)" href="#" id="scorersTable">View Raw</a>
     </div>
     <form name="playerFilter" id="playerFilter" method="POST">
       <div class="container">
