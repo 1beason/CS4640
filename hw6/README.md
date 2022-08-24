@@ -1,0 +1,8 @@
+# Homework 6 - Evil Wordle Redux: Client Edition </br> 
+**Link to HW Description:** https://cs4640.cs.virginia.edu/homework/homework6.html </br>
+</br>
+Based on the success of our prior Wordle Extreme, aka Homework 4, as well as the rise of even more wordle clones such as Kilordle… we’re taking our word guessing game to the browser! Specifically, just like our last version, words can be any length and we’re giving more cryptic clues. However, now the entire game can be played in the browser using JavaScript! </br>
+
+Our new version will consist of only one page, index.html, and will display the game page as well as the user’s game stats. For the game, the user will be presented with a text box to ether their guess. Once the user enters a guess, if they are incorrect, the display will be updated, adding their previous guesses and how close they were. That is, we’ll tell the user how many characters in their guess were in the correct position, how many characters in their guess were in the target word, and whether their word was longer, shorter, or the same length as the target word. Users may continue guessing until they guess the word, with their guesses and stats appearing on the game page. The number of games they have played, their current win streak, and number of overall guesses will be maintained in Local Storage on their browser and displayed to the user as well. </br>
+
+For this assignment, you must implement the following components. (You may implement more functionality if you wish, for example by telling users which letters they have in the right spot, but remember that we’ll be grading on effort in implementing these components below.)
